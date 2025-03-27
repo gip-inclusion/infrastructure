@@ -1,15 +1,18 @@
-terraform {
-  required_providers {
-    scaleway = {
-      source  = "scaleway/scaleway"
-      version = "2.46.0"
-    }
-  }
-  required_version = ">= 0.13"
+module "bootstrap" {
+  source = "./bootstrap"
+
+  providers       = { scaleway = scaleway.terraform-ci }
+  organization_id = var.scw_organization_id
+
+  managed = local.managed
 }
 
-locals {
-  now        = timestamp()
-  managed    = "Updated by Terraform on ${local.now}"
-  expires_at = timeadd(local.now, "5m")
+output "ci_access_key" {
+  value     = module.bootstrap.ci_access_key
+  sensitive = true
+}
+
+output "ci_secret_key" {
+  value     = module.bootstrap.ci_secret_key
+  sensitive = true
 }
