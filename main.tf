@@ -1,7 +1,7 @@
 module "bootstrap" {
   source = "./bootstrap"
 
-  providers       = { scaleway = scaleway.terraform-ci }
+  providers       = { scaleway = scaleway.terraform_ci }
   organization_id = var.scw_organization_id
 
   managed = local.managed

@@ -15,7 +15,7 @@ provider "github" {
 }
 
 provider "scaleway" {
-  alias           = "terraform-ci"
+  alias           = "terraform_ci"
   region          = var.scw_default_region
   zone            = var.scw_default_zone
   organization_id = var.scw_organization_id
