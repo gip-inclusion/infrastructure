@@ -25,6 +25,14 @@ read -r -p "Enter your access key (ACCESS_KEY) : " scw_access_key
 read -r -p "Enter your secret key (SECRET_KEY) : " scw_secret_key
 read -r -p "Enter your organization id (SCW_ORGANIZATION_ID) : " scw_organization_id
 
+tfvars_filename="tmp.auto.tfvars"
+
+cat > "$tfvars_filename" <<EOF
+scw_access_key = "$scw_access_key"
+scw_secret_key = "$scw_secret_key"
+scw_organization_id = "$scw_organization_id"
+EOF
+
 backend_filename="backend.tf"
 backend_backup_filename="$backend_filename.backup"
 
@@ -37,11 +45,9 @@ else
 fi
 
 terraform init
-terraform apply \
-    -auto-approve \
-    -var="scw_access_key=$scw_access_key" \
-    -var="scw_secret_key=$scw_secret_key" \
-    -var="scw_organization_id=$scw_organization_id"
+terraform apply -auto-approve -var-file="$tfvars_filename"
+
+rm "$tfvars_filename"
 
 if [ -f "$backend_backup_filename" ]; then
     mv $backend_backup_filename $backend_filename
@@ -51,6 +57,6 @@ else
     exit 1
 fi
 
-terraform init -migrate-state 
+terraform init -migrate-state
 
 echo "Bootstrapping done!"
