@@ -22,4 +22,4 @@ jobs:
             -backend-config "secret_key=$TF_VAR_scw_secret_key"
             -no-color
       - name: Terraform apply
-        run: terraform apply -input=false -no-color
+        run: terraform apply -input=false -no-color -auto-approve
