@@ -2,7 +2,7 @@ name: Terraform apply
 on:
   push:
     branches:
-      - 'main'
+      - main
 
 env:
   TF_VAR_scw_organization_id: ${{ secrets.SCW_ORGANIZATION_ID }}
