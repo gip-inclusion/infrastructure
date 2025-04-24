@@ -21,22 +21,22 @@ resource "scaleway_account_project" "terraform" {
 }
 
 resource "scaleway_object_bucket" "gip_inclusion_terraform_state" {
-  provider = scaleway
-  name = "gip-inclusion-terraform-state"
+  provider   = scaleway
+  name       = "gip-inclusion-terraform-state"
   project_id = scaleway_account_project.terraform.id
   versioning { enabled = true }
 }
 
 resource "scaleway_object_bucket_acl" "state_bucket_acl" {
-  bucket = scaleway_object_bucket.gip_inclusion_terraform_state.id
+  bucket     = scaleway_object_bucket.gip_inclusion_terraform_state.id
   project_id = scaleway_account_project.terraform.id
-  acl = "private"
+  acl        = "private"
 }
 
 resource "scaleway_object_bucket_policy" "state_bucket_policy" {
   # Configure bucket before to set a restrictive policy.
   depends_on = [scaleway_object_bucket_acl.state_bucket_acl]
-  bucket = scaleway_object_bucket.gip_inclusion_terraform_state.id
+  bucket     = scaleway_object_bucket.gip_inclusion_terraform_state.id
   project_id = scaleway_object_bucket.gip_inclusion_terraform_state.project_id
   policy = jsonencode(
     {
@@ -66,12 +66,12 @@ resource "scaleway_object_bucket_policy" "state_bucket_policy" {
           Resource = [
             "${scaleway_object_bucket.gip_inclusion_terraform_state.name}",
             "${scaleway_object_bucket.gip_inclusion_terraform_state.name}/*"
-           ]
-         },
-       ]
-     }
-   )
- }
+          ]
+        },
+      ]
+    }
+  )
+}
 
 resource "scaleway_iam_application" "terraform_ci" {
   name        = "terraform-ci"
@@ -79,16 +79,16 @@ resource "scaleway_iam_application" "terraform_ci" {
 }
 
 resource "scaleway_iam_api_key" "terraform_ci_api_key" {
-  application_id     = scaleway_iam_application.terraform_ci.id
-  description        = var.managed
+  application_id = scaleway_iam_application.terraform_ci.id
+  description    = var.managed
   # When authenticating Object Storage operations, SCW uses the default project
   # linked to the API key.
   default_project_id = scaleway_object_bucket.gip_inclusion_terraform_state.project_id
 }
 
 resource "scaleway_iam_policy" "terraform_ci" {
-  name = "terraform-ci"
-  description = var.managed
+  name           = "terraform-ci"
+  description    = var.managed
   application_id = scaleway_iam_application.terraform_ci.id
   rule {
     organization_id = var.organization_id
@@ -99,39 +99,39 @@ resource "scaleway_iam_policy" "terraform_ci" {
     ]
   }
   rule {
-    project_ids = [var.organization_id]
+    project_ids          = [var.organization_id]
     permission_set_names = ["DomainsDNSFullAccess"]
   }
   rule {
-    project_ids = [scaleway_account_project.terraform.id]
+    project_ids          = [scaleway_account_project.terraform.id]
     permission_set_names = ["ObjectStorageFullAccess"]
   }
 }
 
 resource "github_actions_secret" "ci_access_key" {
-  repository       = local.repository
-  secret_name      = "SCW_TF_CI_ACCESS_KEY"
-  plaintext_value  = scaleway_iam_api_key.terraform_ci_api_key.access_key
+  repository      = local.repository
+  secret_name     = "SCW_TF_CI_ACCESS_KEY"
+  plaintext_value = scaleway_iam_api_key.terraform_ci_api_key.access_key
 }
 
 resource "github_actions_secret" "ci_secret_key" {
-  repository       = local.repository
-  secret_name      = "SCW_TF_CI_SECRET_KEY"
-  plaintext_value  = scaleway_iam_api_key.terraform_ci_api_key.secret_key
+  repository      = local.repository
+  secret_name     = "SCW_TF_CI_SECRET_KEY"
+  plaintext_value = scaleway_iam_api_key.terraform_ci_api_key.secret_key
 }
 
 resource "github_actions_secret" "ci_organization_id" {
-  repository       = local.repository
-  secret_name      = "SCW_ORGANIZATION_ID"
-  plaintext_value  = var.organization_id
+  repository      = local.repository
+  secret_name     = "SCW_ORGANIZATION_ID"
+  plaintext_value = var.organization_id
 }
 
 output "ci_access_key" {
-  value = scaleway_iam_api_key.terraform_ci_api_key.access_key
+  value     = scaleway_iam_api_key.terraform_ci_api_key.access_key
   sensitive = true
 }
 
 output "ci_secret_key" {
-  value = scaleway_iam_api_key.terraform_ci_api_key.secret_key
+  value     = scaleway_iam_api_key.terraform_ci_api_key.secret_key
   sensitive = true
 }
