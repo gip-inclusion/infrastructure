@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket                      = "gip-inclusion-terraform-state"
+    bucket                      = "gip-inclusion-state"
     key                         = "terraform.tfstate"
     region                      = "fr-par"
     skip_credentials_validation = true

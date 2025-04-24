@@ -22,7 +22,7 @@ resource "scaleway_account_project" "terraform" {
 
 resource "scaleway_object_bucket" "gip_inclusion_terraform_state" {
   provider   = scaleway
-  name       = "gip-inclusion-terraform-state"
+  name       = "gip-inclusion-state"
   project_id = scaleway_account_project.terraform.id
   versioning { enabled = true }
 }
