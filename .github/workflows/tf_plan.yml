@@ -1,5 +1,7 @@
 name: Terraform plan
-on: pull_request
+on:
+  pull_request:
+  merge_group:
 
 env:
   TF_VAR_scw_organization_id: ${{ secrets.SCW_ORGANIZATION_ID }}
