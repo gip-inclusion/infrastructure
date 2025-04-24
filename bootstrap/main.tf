@@ -1,8 +1,5 @@
 terraform {
   required_providers {
-    github = {
-      source = "integrations/github"
-    }
     scaleway = {
       source = "scaleway/scaleway"
     }
@@ -106,24 +103,6 @@ resource "scaleway_iam_policy" "terraform_ci" {
     project_ids          = [scaleway_object_bucket.gip_inclusion_terraform_state.project_id]
     permission_set_names = ["ObjectStorageFullAccess"]
   }
-}
-
-resource "github_actions_secret" "ci_access_key" {
-  repository      = local.repository
-  secret_name     = "SCW_TF_CI_ACCESS_KEY"
-  plaintext_value = scaleway_iam_api_key.terraform_ci_api_key.access_key
-}
-
-resource "github_actions_secret" "ci_secret_key" {
-  repository      = local.repository
-  secret_name     = "SCW_TF_CI_SECRET_KEY"
-  plaintext_value = scaleway_iam_api_key.terraform_ci_api_key.secret_key
-}
-
-resource "github_actions_secret" "ci_organization_id" {
-  repository      = local.repository
-  secret_name     = "SCW_ORGANIZATION_ID"
-  plaintext_value = var.organization_id
 }
 
 output "ci_access_key" {

@@ -66,4 +66,10 @@ terraform init -backend-config="$tfvars_filename" -migrate-state
 
 shred -u "$tfvars_filename"
 
+REPOSITORY=gip-inclusion/infrastructure
+
+gh secret set "SCW_ORGANIZATION_ID" --body "${scw_organization_id}" --app actions --repo $REPOSITORY
+gh secret set "SCW_TF_CI_ACCESS_KEY" --body "$(terraform output ci_access_key)" --app actions --repo $REPOSITORY
+gh secret set "SCW_TF_CI_SECRET_KEY" --body "$(terraform output ci_secret_key)" --app actions --repo $REPOSITORY
+
 echo "Bootstrapping done!"

@@ -1,17 +1,10 @@
 terraform {
   required_providers {
-    github = {
-      source = "integrations/github"
-    }
     scaleway = {
       source = "scaleway/scaleway"
     }
   }
   required_version = ">= 0.13"
-}
-
-provider "github" {
-  owner = "gip-inclusion"
 }
 
 provider "scaleway" {
