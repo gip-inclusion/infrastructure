@@ -83,7 +83,7 @@ resource "scaleway_iam_api_key" "terraform_ci_api_key" {
   description        = var.managed
   # When authenticating Object Storage operations, SCW uses the default project
   # linked to the API key.
-  default_project_id = scaleway_account_project.terraform.id
+  default_project_id = scaleway_object_bucket.gip_inclusion_terraform_state.project_id
 }
 
 resource "scaleway_iam_policy" "terraform_ci" {
