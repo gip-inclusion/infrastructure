@@ -18,8 +18,8 @@ jobs:
       - name: Terraform init
         run: >
           terraform init -input=false
-            -backend-config "access_key=$TF_VAR_scw_access_key"
-            -backend-config "secret_key=$TF_VAR_scw_secret_key"
-            -no-color
+          -backend-config "access_key=$TF_VAR_scw_access_key"
+          -backend-config "secret_key=$TF_VAR_scw_secret_key"
+          -no-color
       - name: Terraform apply
         run: terraform apply -input=false -no-color -auto-approve
