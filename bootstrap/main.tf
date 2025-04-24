@@ -103,7 +103,7 @@ resource "scaleway_iam_policy" "terraform_ci" {
     permission_set_names = ["DomainsDNSFullAccess"]
   }
   rule {
-    project_ids          = [scaleway_account_project.terraform.id]
+    project_ids          = [scaleway_object_bucket.gip_inclusion_terraform_state.project_id]
     permission_set_names = ["ObjectStorageFullAccess"]
   }
 }
