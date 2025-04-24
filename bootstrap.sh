@@ -18,9 +18,12 @@ if ! gh auth status &> /dev/null; then
 fi
 
 echo "Create your superadmin API key"
-read -s -r -p "Enter your access key (ACCESS_KEY) : " scw_access_key
-read -s -r -p "Enter your secret key (SECRET_KEY) : " scw_secret_key
-read -s -r -p "Enter your organization id (SCW_ORGANIZATION_ID) : " scw_organization_id
+read -s -r -p "Enter your access key (ACCESS_KEY): " scw_access_key
+echo
+read -s -r -p "Enter your secret key (SECRET_KEY): " scw_secret_key
+echo
+read -s -r -p "Enter your organization id (SCW_ORGANIZATION_ID): " scw_organization_id
+echo
 
 tfvars_filename=$(mktemp)
 
@@ -44,10 +47,11 @@ fi
 terraform init -backend-config="$tfvars_filename"
 terraform apply -auto-approve -var-file="$tfvars_filename"
 
+# access_key and secret_key are used by the terraform backend to access the
+# state, scw_* are used by terraform.
 cat > "$tfvars_filename" <<EOF
-scw_access_key = $(terraform output ci_access_key)
-scw_secret_key = $(terraform output ci_secret_key)
-scw_organization_id = "$scw_organization_id"
+access_key = $(terraform output ci_access_key)
+secret_key = $(terraform output ci_secret_key)
 EOF
 
 if [ -f "$backend_backup_filename" ]; then
