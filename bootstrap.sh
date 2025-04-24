@@ -17,7 +17,7 @@ if ! gh auth status &> /dev/null; then
     exit 1
 fi
 
-echo "Create your superadmin API key"
+echo "Create your superadmin API key in the Scaleway console"
 read -s -r -p "Enter your access key (ACCESS_KEY): " scw_access_key
 echo
 read -s -r -p "Enter your secret key (SECRET_KEY): " scw_secret_key
