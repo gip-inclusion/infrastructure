@@ -11,9 +11,8 @@ Make sure you are authenticated on the GitHub CLI so that Terraform can create
 the CI credentials:
 https://registry.terraform.io/providers/integrations/github/latest/docs#github-cli.
 
-1. Create your super admin token using the Scaleway UI.
-2. Generate an API key using the Scaleway UI.
-3. Export the API key in your environment:
+1. Generate an API key using the Scaleway UI.
+2. Export the API key in your environment:
 
     ```bash
     export TF_VAR_scw_access_key=ACCESS_KEY_GOES_HERE
@@ -21,9 +20,9 @@ https://registry.terraform.io/providers/integrations/github/latest/docs#github-c
     export TF_VAR_scw_organization_id=SCW_ORGANIZATION_ID_GOES_HERE
     ```
 
-4. Delete the `backend.tf` file
-5. Populate the state with `terraform init`
-6. Bootstrap with `terraform apply`. The following warning is expected:
+3. Delete the `backend.tf` file
+4. Populate the state with `terraform init`
+5. Bootstrap with `terraform apply`. The following warning is expected:
 
     ```
     ╷
@@ -41,12 +40,12 @@ https://registry.terraform.io/providers/integrations/github/latest/docs#github-c
     application. When the policy is applied, your super user loses access to
     the bucket.
 
-7. Change credentials to use the CI credentials.
+6. Change credentials to use the CI credentials.
 
     ```bash
     terraform output ci_access_key
     terraform output ci_secret_key
     ```
 
-8. Restore the `backend.tf`, and use `terraform init` to migrate the local
+7. Restore the `backend.tf`, and use `terraform init` to migrate the local
    state to the state Object Storage.
