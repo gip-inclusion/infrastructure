@@ -3,6 +3,8 @@ on:
   pull_request:
   merge_group:
 
+permissions: {}
+
 env:
   TF_VAR_scw_organization_id: ${{ secrets.SCW_ORGANIZATION_ID }}
   TF_VAR_scw_access_key: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
