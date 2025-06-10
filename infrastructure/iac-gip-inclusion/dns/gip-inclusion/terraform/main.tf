@@ -64,25 +64,10 @@ module "dns-gip-inclusion" {
       data = "external.notion.site."
       type = "CNAME"
     },
-    "website1" = {
+    "website" = {
       name = ""
-      data = "185.21.194.105"
-      type = "A"
-    },
-    "website2" = {
-      name = ""
-      data = "80.247.12.255"
-      type = "A"
-    },
-    "website3" = {
-      name = ""
-      data = "80.247.13.145"
-      type = "A"
-    },
-    "website4" = {
-      name = ""
-      data = "148.253.96.193"
-      type = "A"
+      data = "gip-inclusion-website-production.osc-secnum-fr1.scalingo.io."
+      type = "ALIAS"
     },
   }
 }
