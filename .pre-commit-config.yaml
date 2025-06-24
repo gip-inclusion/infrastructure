@@ -1,0 +1,45 @@
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        name: Remove trailing whitespaces
+        stages: [pre-commit]
+        args:
+          - --markdown-linebreak-ext=md
+      - id: end-of-file-fixer
+        name: Ensure files ends with a newline
+        stages: [pre-commit]
+      - id: check-added-large-files
+        name: Check for large files
+        stages: [pre-commit]
+      - id: check-yaml
+        name: Check YAML files
+        args:
+          - --allow-multiple-documents
+        stages: [pre-commit]
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.99.4
+    hooks:
+      - id: terraform_fmt
+        name: Format Terraform files
+        args:
+          - --args=-diff
+          - --args=-recursive
+          - --args=-write=true
+        exclude: /cookiecutters
+        stages: [pre-commit]
+      - id: terraform_docs
+        name: Generate Terraform documentation
+        stages: [pre-commit]
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.27.2
+    hooks:
+      - id: gitleaks
+        name: Detect secrets using Gitleaks
