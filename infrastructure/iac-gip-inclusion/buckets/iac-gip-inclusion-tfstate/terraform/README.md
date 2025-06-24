@@ -197,3 +197,45 @@ shred -u terraform.tfstate.backup terraform.tfstate.current
 ---
 
 ⚠️ **Important** : Ce README concerne uniquement l'initialisation du bucket de state. Une fois configuré, ce processus ne doit plus être répété.
+
+---
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10 |
+| <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | 2.55.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.55.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [scaleway_account_project.terraform](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/account_project) | resource |
+| [scaleway_object_bucket.gip_inclusion_terraform_state](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/object_bucket) | resource |
+| [scaleway_object_bucket_acl.state_bucket_acl](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/object_bucket_acl) | resource |
+| [scaleway_object_bucket_policy.state_bucket_policy](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/object_bucket_policy) | resource |
+| [scaleway_iam_application.terraform_ci](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/iam_application) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_scw_region"></a> [scw\_region](#input\_scw\_region) | Scaleway region for resources | `string` | n/a | yes |
+| <a name="input_scw_zone"></a> [scw\_zone](#input\_scw\_zone) | Scaleway zone for resources | `string` | n/a | yes |
+
+## Outputs
+
+No outputs.
+<!-- END_TF_DOCS -->
