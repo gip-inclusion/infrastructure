@@ -5,9 +5,9 @@ TF_PLAN_ALL_OPTS ?=
 TF_APPLY_ALL_OPTS ?=
 
 ifeq ($(CI),true)
-  TF_INIT_ALL_OPTS += -input=false -no-color
-  TF_PLAN_ALL_OPTS += -input=false -no-color
-  TF_APPLY_ALL_OPTS += -input=false -no-color -auto-approve
+  TF_INIT_ALL_OPTS += -input=false
+  TF_PLAN_ALL_OPTS += -input=false
+  TF_APPLY_ALL_OPTS += -input=false -auto-approve
 endif
 
 
