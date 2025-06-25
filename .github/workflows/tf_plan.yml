@@ -6,9 +6,14 @@ on:
 permissions: {}
 
 env:
-  TF_VAR_scw_organization_id: ${{ secrets.SCW_ORGANIZATION_ID }}
-  TF_VAR_scw_access_key: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
-  TF_VAR_scw_secret_key: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+  SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+  SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+  SCW_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+  SCW_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+  # ⬇ This one (legacy) seems still required by iam...
+  SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
 
 jobs:
   terraform_plan:
@@ -16,6 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+      - name: tfswitch
+        uses: stv-io/action-tfswitch@01899697517eba6caeb47aec23e60cc4c80313df # v1.0.2
       - name: Terraform fmt
         run: terraform fmt -check
       - name: Terraform init
@@ -26,6 +33,7 @@ jobs:
           -backend-config "secret_key=$TF_VAR_scw_secret_key"
           -no-color
       - name: Terraform validate
-        run: terraform validate -no-color
+        # run: terraform validate -no-color
+        run: make terraform-validate-all
       - name: Terraform plan
-        run: terraform plan -input=false -no-color
+        run: make terraform-plan-all
