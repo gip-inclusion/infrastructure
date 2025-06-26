@@ -1,0 +1,56 @@
+name: "Apply: infrastructure/iac-gip-inclusion/dns/zones"
+
+permissions:
+  contents: read
+  id-token: write
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - infrastructure/iac-gip-inclusion/dns/zones/terraform/*.tfvars
+      - infrastructure/iac-gip-inclusion/dns/zones/terraform/**/*.tf
+      - infrastructure/iac-gip-inclusion/dns/zones/terraform/*.tf
+      - infrastructure/iac-gip-inclusion/dns/zones/terraform/.terraform.lock.hcl
+
+jobs:
+  infrastructure_iac_gip_inclusion_dns_zones_terraform_push:
+    env:
+      SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+      SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      SCW_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+      SCW_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+      # ⬇ This one (legacy) seems still required by some modules…
+      SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      PROJECT_PATH: "infrastructure/iac-gip-inclusion/dns/zones/terraform"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup tfswitch
+        uses: stv-io/action-tfswitch@01899697517eba6caeb47aec23e60cc4c80313df # v1.0.2
+
+      - name: Terraform validate
+        id: tf-validate
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: |
+          tfswitch
+          terraform init -input=false
+          terraform validate -no-color
+
+      - name: Terraform plan
+        id: tf-plan
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: |
+          tfswitch
+          terraform plan -lock-timeout=60s -var-file=terraform.tfvars -input=false
+
+      - name: Terraform apply
+        id: tf-apply
+        working-directory: ${{ env.PROJECT_PATH }}
+        run: |
+          tfswitch
+          terraform apply -input=false -auto-approve
