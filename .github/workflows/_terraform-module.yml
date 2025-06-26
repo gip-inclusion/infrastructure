@@ -1,0 +1,72 @@
+name: _terraform-module
+on:
+  # Reusable workflow called by the orchestrator job
+  workflow_call:
+    inputs:
+      module_path:
+        description: "Module path (terraform directory)"
+        required: true
+        type: string
+      module_label:
+        description: "Short label for display (project/resource_type/...)"
+        required: true
+        type: string
+      apply:
+        description: "true to run apply, otherwise plan only"
+        default: false
+        type: boolean
+    secrets:
+      SCW_TF_CI_ACCESS_KEY: { required: true }
+      SCW_TF_CI_SECRET_KEY: { required: true }
+      SCW_DEFAULT_PROJECT_ID: { required: true }
+      SCW_ORGANIZATION_ID: { required: true }
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform:
+    name: Terraform ${{ inputs.module_label }}
+    runs-on: ubuntu-latest
+
+    # Ensure only one run per module at a time (avoid race conditions)
+    concurrency:
+      group: tf-${{ inputs.module_path }}
+      cancel-in-progress: false
+
+    env:
+      SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+      SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      SCW_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+      SCW_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+      SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      MODULE_PATH: ${{ inputs.module_path }}
+      MODULE_LABEL: ${{ inputs.module_label }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+
+      - name: Terraform validate
+        if: always()
+        working-directory: ${{ env.MODULE_PATH }}
+        run: |
+          terraform init -reconfigure -input=false
+          terraform validate -no-color
+
+      - name: Terraform plan
+        working-directory: ${{ env.MODULE_PATH }}
+        run: |
+          terraform plan -lock-timeout=60s -var-file=terraform.tfvars -input=false
+
+      - name: Terraform apply
+        if: ${{ success() && !inputs.apply }}
+        working-directory: ${{ env.MODULE_PATH }}
+        run: |
+          terraform apply -lock-timeout=60s -var-file=terraform.tfvars -input=false -auto-approve

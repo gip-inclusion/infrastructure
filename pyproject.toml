@@ -1,0 +1,25 @@
+[project]
+name = "gip-inclusion-iac"
+dynamic = ["version"]
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 119
+
+[tool.ruff.lint]
+# See prefixes in https://beta.ruff.rs/docs/rules/
+select = [
+    "F",  # pyflakes
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "I",  # isort
+    "UP",  # pyupgrade
+    "TID",  # flake8-tidy-imports
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+lines-after-imports = 2
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
