@@ -139,10 +139,10 @@ output "zone_id" {
    ```bash
    # Formatage automatique
    terraform fmt -recursive
-   
+
    # Validation de la syntaxe
    make terraform-validate SERVICE=infrastructure/votre-module
-   
+
    # Test de planification
    make terraform-plan SERVICE=infrastructure/votre-module
    ```
@@ -205,7 +205,7 @@ data "scaleway_instance_image" "ubuntu" {
 resource "scaleway_instance_server" "good" {
   type  = var.instance_type
   image = data.scaleway_instance_image.ubuntu.id
-  
+
   tags = var.common_tags
 }
 ```
