@@ -25,13 +25,6 @@ jobs:
       - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
       - name: Terraform fmt
         run: terraform fmt -check
-      - name: Terraform init
-        run: >
-          terraform init
-          -input=false
-          -backend-config "access_key=$TF_VAR_scw_access_key"
-          -backend-config "secret_key=$TF_VAR_scw_secret_key"
-          -no-color
       - name: Terraform validate
         run: make terraform-validate-all
       - name: Terraform plan
