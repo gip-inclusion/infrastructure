@@ -8,22 +8,21 @@ terraform {
   required_version = ">= 1.10"
 }
 
-resource "scaleway_account_project" "terraform" {
-  # Use a separate project to prevent terraform from accessing buckets from the
-  # default project.
-  name = "terraform"
-}
+/*
+  We use a dedicated project for the Terraform state bucket to prevent
+  Terraform from accessing buckets from the default project.
+*/
 
 resource "scaleway_object_bucket" "gip_inclusion_terraform_state" {
   provider   = scaleway
   name       = "gip-inclusion-state"
-  project_id = scaleway_account_project.terraform.id
+  project_id = data.scaleway_account_project.terraform.id
   versioning { enabled = true }
 }
 
 resource "scaleway_object_bucket_acl" "state_bucket_acl" {
   bucket     = scaleway_object_bucket.gip_inclusion_terraform_state.id
-  project_id = scaleway_account_project.terraform.id
+  project_id = data.scaleway_account_project.terraform.id
   acl        = "private"
 }
 
