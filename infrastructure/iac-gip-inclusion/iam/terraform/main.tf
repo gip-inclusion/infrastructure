@@ -8,6 +8,12 @@ terraform {
   required_version = ">= 1.10"
 }
 
+resource "scaleway_iam_group" "emplois_cnav" {
+  name                = "emplois-cnav"
+  description         = var.managed
+  external_membership = true
+}
+
 resource "scaleway_iam_application" "terraform_ci" {
   name        = "terraform-ci"
   description = var.managed
@@ -36,19 +42,38 @@ resource "scaleway_iam_policy" "terraform_ci" {
     project_ids = [data.scaleway_account_project.default.project_id]
     permission_set_names = [
       "DomainsDNSFullAccess",
-      "BlockStorageFullAccess",
-      "ContainerRegistryFullAccess",
-      "IPAMFullAccess",
-      "InstancesFullAccess",
-      "KubernetesFullAccess",
-      "PrivateNetworksFullAccess",
-      "SecretManagerFullAccess",
-      "VPCFullAccess",
-      "VPCGatewayFullAccess",
     ]
   }
   rule {
     project_ids          = [data.scaleway_account_project.terraform.project_id]
     permission_set_names = ["ObjectStorageFullAccess"]
+  }
+  rule {
+    project_ids = [data.scaleway_account_project.emplois_cnav.project_id]
+    permission_set_names = [
+      "ContainerRegistryFullAccess",
+      "SecretManagerFullAccess",
+      "BlockStorageFullAccess",
+      "IPAMFullAccess",
+      "InstancesFullAccess",
+      "KubernetesFullAccess",
+      "PrivateNetworksFullAccess",
+      "SecretManagerFullAccess",
+      "SSHKeysFullAccess",
+      "VPCFullAccess",
+      "VPCGatewayFullAccess",
+    ]
+  }
+}
+
+resource "scaleway_iam_policy" "emplois_cnav" {
+  name        = "emplois-cnav"
+  description = var.managed
+  group_id    = scaleway_iam_group.emplois_cnav.id
+  rule {
+    project_ids = [data.scaleway_account_project.emplois_cnav.project_id]
+    permission_set_names = [
+      "SecretManagerFullAccess",
+    ]
   }
 }
