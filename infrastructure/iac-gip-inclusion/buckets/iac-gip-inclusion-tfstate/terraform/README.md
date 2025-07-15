@@ -222,10 +222,10 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [scaleway_account_project.terraform](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/account_project) | resource |
 | [scaleway_object_bucket.gip_inclusion_terraform_state](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/object_bucket) | resource |
 | [scaleway_object_bucket_acl.state_bucket_acl](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/object_bucket_acl) | resource |
 | [scaleway_object_bucket_policy.state_bucket_policy](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/object_bucket_policy) | resource |
+| [scaleway_account_project.terraform](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
 | [scaleway_iam_application.terraform_ci](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/iam_application) | data source |
 
 ## Inputs
