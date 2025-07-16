@@ -28,9 +28,8 @@ resource "scaleway_iam_policy" "terraform_ci" {
   rule {
     organization_id = data.scaleway_account_project.default.organization_id
     permission_set_names = [
-      "IAMReadOnly",
-      # Verify the terraform project existence.
-      "ProjectReadOnly",
+      "IAMManager",
+      "ProjectManager",
     ]
   }
   rule {
