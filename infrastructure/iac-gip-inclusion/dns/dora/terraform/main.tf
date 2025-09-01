@@ -51,5 +51,11 @@ module "dns-dora" {
       type = "CNAME"
       ttl = 300
     },
+    "metabase" = {
+      name = "metabase.dora"
+      data = "dora-metabase-v2.osc-secnum-fr1.scalingo.io."
+      type = "CNAME"
+      ttl = 300
+    },
   }
 }
