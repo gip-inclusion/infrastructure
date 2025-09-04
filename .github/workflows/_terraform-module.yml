@@ -60,6 +60,15 @@ jobs:
           set -euo pipefail
           terraform fmt -check -diff -recursive
 
+      - name: Terraform docs
+        if: always()
+        uses: terraform-docs/gh-actions@6de6da0cefcc6b4b7a5cbea4d79d97060733093c # v1.4.1
+        with:
+          working-dir: ${{ env.MODULE_PATH }}
+          output-method: inject
+          output-file: README.md
+          fail-on-diff: "true"
+
       - name: Terraform validate
         if: always()
         working-directory: ${{ env.MODULE_PATH }}
