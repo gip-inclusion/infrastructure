@@ -1,0 +1,148 @@
+name: Terraform
+
+on:
+  # Run plans for any PR base branch (not only main)
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'infrastructure/**'
+
+  # Run in GitHub Merge Queue (required for checks in the queue)
+  merge_group:
+    types: [checks_requested]
+
+  # Apply only when code lands on main
+  push:
+    branches: [ main ]
+    paths:
+      - 'infrastructure/**'
+
+  # Manual run (optionally target a single module)
+  workflow_dispatch:
+    inputs:
+      module_path:
+        description: "Module path (terraform directory)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  detect-modules:
+    name: Auto-detect changed modules
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+      count: ${{ steps.build.outputs.count }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          # We need history to diff against the base SHA
+          fetch-depth: 0
+
+      - id: build
+        name: Build matrix
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          # Manual override via workflow_dispatch
+          modules_json='[]'
+          input_path="${{ github.event.inputs.module_path || '' }}"
+          if [[ -n "$input_path" ]]; then
+            # Single-entry matrix from manual input
+            modules_json=$(jq -nc --arg p "$input_path" '[{module_path:$p}]')
+          else
+            # Determine BASE commit according to the event type
+            case "${{ github.event_name }}" in
+              pull_request) base="${{ github.event.pull_request.base.sha }}" ;;
+              push)         base="${{ github.event.before }}" ;;
+              merge_group)  base="${{ github.event.merge_group.base_sha }}" ;;
+              *)            base="$(git rev-parse HEAD^ || true)" ;;
+            esac
+            [[ -z "${base:-}" ]] && base="$(git rev-parse HEAD^ || true)"
+
+            # Build the JSON matrix
+            # - Retrieve changed files between base and head (including deleted ones)
+            # - Handle renames (tr)
+            # - Normalize any changed file under a module to its root '<path>/terraform'
+            # - Sort and deduplicate modules
+            changed_modules="$(
+              git diff --name-only --diff-filter=ACDMR "$base" "$GITHUB_SHA" \
+                | tr '\t' '\n' \
+                | sed -nE '/\.(md|markdown)$/I! s#^(infrastructure/.*/terraform)(/.*)?$#\1#p' \
+                | sort -u
+            )"
+            existing_changed_modules="$(
+              while IFS= read -r p; do
+                [[ -n "$p" && -d "$p" ]] && printf '%s\n' "$p"
+              done <<< "$changed_modules"
+            )"
+            matrix="$(
+              jq -R -s -c '
+                split("\n") | map(select(length>0)) |
+                map({ module_path: .,
+                      module_label: ( . | sub("^infrastructure/";"") | sub("/terraform$";"") ) })' \
+              <<< "$existing_changed_modules"
+            )"
+          fi
+
+          # Emit outputs
+          count="$(jq -r 'length' <<<"$matrix")"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+
+          # Display a human-friendly summary
+          {
+            echo "### Terraform modules to run"
+            if [[ "$count" -gt 0 ]]; then
+              # Build links to the current branch
+              repository_name="${{ github.repository }}"
+              # Prefer head_ref (PR/merge_group), else ref_name (push); fallback to stripping refs/heads/
+              ref_name="${{ github.head_ref || github.ref_name || '' }}"
+              if [[ -z "$ref_name" ]]; then ref_name="${GITHUB_REF#refs/heads/}"; fi
+
+              echo
+              echo "| # | Module | Lien |"
+              echo "|--:|:-------|:-----|"
+              jq -r '.[].module_path' <<<"$matrix" \
+                | nl -ba -w1 -s $'\t' \
+                | while IFS=$'\t' read -r idx path; do
+                    url="https://github.com/${repository_name}/tree/${ref_name}/${path}"
+                    printf '| %s | `%s` | [Lien](%s) |\n' "$idx" "$path" "$url"
+                  done
+            else
+              echo
+              echo "_No Terraform modules changed._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  run-terraform:
+    name: Run Terraform
+    needs: detect-modules
+
+    if: ${{ needs.detect-modules.outputs.count != '0' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.detect-modules.outputs.matrix) }}
+
+    # Call the reusable workflow once per module entry in the matrix
+    uses: ./.github/workflows/_terraform-module.yml
+    with:
+      module_path: ${{ matrix.module_path }}
+      module_label: ${{ matrix.module_label }}
+      commit_sha: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha || github.sha }}
+      # Apply only on push to main; otherwise do a plan
+      apply: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main')) && 'true' || 'false' }}
+    secrets:
+      SCW_TF_CI_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+      SCW_TF_CI_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+      SCW_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
