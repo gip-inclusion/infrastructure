@@ -25,6 +25,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   id-token: write
 
 jobs:
@@ -69,6 +70,7 @@ jobs:
     with:
       module_path: ${{ matrix.module_path }}
       module_label: ${{ matrix.module_label }}
+      commit_sha: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha || github.sha }}
       # Apply only on push to main; otherwise do a plan
       # Checking for ref_name is redundant but deliberate here (push events only applies to main)
       apply: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
