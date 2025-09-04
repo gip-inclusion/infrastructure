@@ -24,6 +24,16 @@ module "dns-emplois" {
       name = "emplois"
       data = "domain.par.clever-cloud.com."
       type = "ALIAS"
-    }
+    },
+    "test" : {
+      name = "emplois"
+      data = "test"
+      type = "TXT"
+    },
+    "test2" : {
+      name = "emplois"
+      data = "test2"
+      type = "TXT"
+    },
   }
 }

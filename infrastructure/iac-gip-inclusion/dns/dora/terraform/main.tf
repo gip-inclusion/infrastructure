@@ -45,5 +45,10 @@ module "dns-dora" {
       type = "CNAME"
       ttl  = 300
     },
+    "test" = {
+      name = "dora"
+      data = "test"
+      type = "TXT"
+    },
   }
 }
