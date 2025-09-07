@@ -58,6 +58,28 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
 
+      - name: Install AGE
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Install AGE (latest)"
+
+          # Fetch the last version using the /releases/latest redirection
+          version="$(curl -fsSLI -o /dev/null -w '%{url_effective}' -L https://github.com/FiloSottile/age/releases/latest \
+                     | sed --regexp-extended 's#.*/tag/v([^/]+)$#\1#')"
+          echo "Latest age version: $version"
+
+          url="https://github.com/FiloSottile/age/releases/download/v${version}/age-v${version}-linux-amd64.tar.gz"
+          tmp="$(mktemp -d)"
+          curl -fsSL "$url" | tar -xz -C "$tmp"
+
+          sudo install -m 0755 "$tmp/age/age"        /usr/local/bin/age
+          sudo install -m 0755 "$tmp/age/age-keygen" /usr/local/bin/age-keygen
+
+          # Check installation is OK
+          /usr/local/bin/age --version || true
+          echo "::endgroup::"
+
       - name: Populating env vars
         shell: bash
         run: |
@@ -131,12 +153,28 @@ jobs:
             echo "</details>"
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Encrypt plan with AGE
+        if: ${{ success() && !inputs.apply }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cleanup() {
+            rm -f "$PLAN_BIN" "$PLAN_DIR/tfplan.txt" "$PLAN_DIR/tfplan.json"
+          }
+          trap cleanup EXIT INT TERM
+
+          test -n "${{ vars.AGE_PUBLIC_KEY }}"
+          age -r "${{ vars.AGE_PUBLIC_KEY }}" -o "$PLAN_DIR/tfplan.bin.age" "$PLAN_BIN"
+
       - name: Upload plan artifact
         if: ${{ success() && !inputs.apply }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: tfplan-${{ inputs.commit_sha }}-${{ env.MODULE_ID }}
-          path: ${{ env.PLAN_DIR }}
+          path: |
+            ${{ env.PLAN_DIR }}/tfplan.bin.age
+            ${{ env.PLAN_DIR }}/tfplan.sha256
           if-no-files-found: error
           retention-days: 14
 
@@ -186,6 +224,16 @@ jobs:
           run-id: ${{ steps.find_run.outputs.run-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Decrypt plan
+        if: ${{ success() && inputs.apply }}
+        env:
+          AGE_PRIVATE_KEY: ${{ secrets.AGE_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$AGE_PRIVATE_KEY"
+          printf '%s\n' "$AGE_PRIVATE_KEY" | age -d -i - -o "$PLAN_DIR/tfplan.bin" "$PLAN_DIR/tfplan.bin.age"
+
       - name: Verify plan checksum
         if: ${{ success() && inputs.apply }}
         shell: bash
@@ -202,3 +250,10 @@ jobs:
         run: |
           set -u
           terraform apply -input=false -lock-timeout=60s "$PLAN_DIR/tfplan.bin"
+
+      - name: Wipe decrypted plan
+        if: ${{ always() && inputs.apply }}
+        shell: bash
+        run: |
+          set -u
+          rm -rf "$PLAN_DIR"
