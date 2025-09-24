@@ -31,6 +31,12 @@ module "dns-gip-inclusion" {
       type = "CNAME"
       ttl  = 10800
     },
+    # TXT record for Google Search Console auth
+    "google-site-verification-eIGx2" = {
+      name = ""
+      data = "google-site-verification=eIGx2V2dBtT3Ix4xPGvkEicTf3BR8VP744PzOVmosLM"
+      type = "TXT"
+    },
     # TXT record for Riot auth
     "google-site-verification-YGht5" = {
       name = ""
