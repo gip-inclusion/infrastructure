@@ -15,6 +15,11 @@ module "dns-gip-inclusion" {
   scw_zone   = var.scw_zone
 
   records = {
+    "bitwarden" = {
+      name = "bitwarden"
+      data = "bitwarden.inclusion.cloud-ed.fr."
+      type = "CNAME"
+    },
     "ciso" = {
       name = "ciso"
       data = "51.15.213.160"
