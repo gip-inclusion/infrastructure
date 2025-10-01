@@ -206,7 +206,7 @@ jobs:
         run: |
           set -euo pipefail
           run_id="$(
-            gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/terraform-orchestrator.yml/runs" \
+            gh api --method GET "repos/${GITHUB_REPOSITORY}/actions/workflows/terraform-orchestrator.yml/runs" \
               -f event=pull_request \
               -f head_sha='${{ steps.find_pr.outputs.plan-sha }}' \
               -F per_page=1 \
