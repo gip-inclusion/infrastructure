@@ -22,8 +22,11 @@ No modules.
 |------|------|
 | [scaleway_iam_api_key.terraform_ci_api_key](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_api_key) | resource |
 | [scaleway_iam_application.terraform_ci](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_application) | resource |
+| [scaleway_iam_group.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_group) | resource |
+| [scaleway_iam_policy.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_policy) | resource |
 | [scaleway_iam_policy.terraform_ci](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_policy) | resource |
 | [scaleway_account_project.default](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
+| [scaleway_account_project.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
 | [scaleway_account_project.terraform](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
 
 ## Inputs
