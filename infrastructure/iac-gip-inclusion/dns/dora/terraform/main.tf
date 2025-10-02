@@ -45,5 +45,10 @@ module "dns-dora" {
       type = "CNAME"
       ttl  = 300
     },
+    "brevo-code" = {
+      name = "dora"
+      data = "brevo-code:0b4f86ed9b3dd6d700ad7212f801c544"
+      type = "TXT"
+    },
   }
 }
