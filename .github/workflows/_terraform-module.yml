@@ -24,6 +24,7 @@ on:
       SCW_TF_CI_SECRET_KEY: { required: true }
       SCW_DEFAULT_PROJECT_ID: { required: true }
       SCW_ORGANIZATION_ID: { required: true }
+      AGE_PRIVATE_KEY: { required: true }
 
 permissions:
   contents: read
