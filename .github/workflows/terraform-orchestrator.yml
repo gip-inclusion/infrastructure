@@ -1,0 +1,82 @@
+name: Terraform
+
+on:
+  # Run plans for any PR base branch (not only main)
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'infrastructure/**'
+
+  # Apply only when code lands on main
+  push:
+    branches: [ main ]
+    paths:
+      - 'infrastructure/**'
+
+  # Manual run (optionally target a single module)
+  workflow_dispatch:
+    inputs:
+      module_path:
+        description: "Module path (terraform directory)"
+        default: ""
+      base:
+        description: "Base to compare against (branch or commit SHA)"
+        default: "main"
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  detect-modules:
+    name: Auto-detect changed modules
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+      count: ${{ steps.build.outputs.count }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          # We need history to diff against the base SHA
+          fetch-depth: 0
+
+      - id: build
+        name: Build matrix
+        env:
+          # Inputs for workflow_dispatch
+          INPUT_BASE: ${{ github.event.inputs.base }}
+          INPUT_MODULE_PATH: ${{ github.event.inputs.module_path }}
+          # Context required for diff computation
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: python .github/scripts/build_matrix.py
+
+  run-terraform:
+    name: Run Terraform
+    needs: detect-modules
+
+    if: ${{ needs.detect-modules.outputs.count != '0' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.detect-modules.outputs.matrix) }}
+
+    # Call the reusable workflow once per module entry in the matrix
+    uses: ./.github/workflows/_terraform-module.yml
+    with:
+      module_path: ${{ matrix.module_path }}
+      module_label: ${{ matrix.module_label }}
+      commit_sha: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha || github.sha }}
+      # Apply only on push to main; otherwise do a plan
+      # Checking for ref_name is redundant but deliberate here (push events only applies to main)
+      apply: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+    secrets:
+      SCW_TF_CI_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+      SCW_TF_CI_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+      SCW_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+      AGE_PRIVATE_KEY: ${{ secrets.AGE_PRIVATE_KEY }}

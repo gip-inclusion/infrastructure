@@ -31,6 +31,7 @@ terraform-validate: guard-SERVICE  ## Validate infrastructure (SERVICE=xxx)
 terraform-validate-all:  ## Validate infrastructure for all services
 	@printf "%b[%s] Validate all infrastructure%b\n" "$(OK_COLOR)" "$(BANNER)" "$(NO_COLOR)"
 	@ROOT_DIR=$$(pwd); \
+	set -e; \
 	find . -type f -name "main.tf" \
 		-not -path "*/.terraform/*" \
 		-exec dirname {} \; \
@@ -38,7 +39,7 @@ terraform-validate-all:  ## Validate infrastructure for all services
 		| while read dir; do \
 		  echo "Processing $$dir"; \
 		  cd "$$dir"; \
-		  which tfswitch && tfswitch || true; \
+		  ( which tfswitch && tfswitch || true ); \
 		  terraform init -reconfigure $(TF_INIT_ALL_OPTS); \
 		  terraform validate; \
 		  cd "$$ROOT_DIR"; \
@@ -52,24 +53,6 @@ terraform-plan: guard-SERVICE  ## Plan infrastructure (SERVICE=xxx)
 		&& terraform init -reconfigure \
 		&& terraform plan -lock-timeout=60s -var-file=terraform.tfvars
 
-.PHONY: terraform-plan-all
-terraform-plan-all:  ## Plan infrastructure for all services
-	@printf "%b[%s] Plan all infrastructure%b\n" "$(OK_COLOR)" "$(BANNER)" "$(NO_COLOR)"
-	@ROOT_DIR=$$(pwd); \
-	find . -type f -name "main.tf" \
-		-not -path "./infrastructure/_modules/*" \
-		-not -path "*/.terraform/*" \
-		-exec dirname {} \; \
-		| sort -u \
-		| while read dir; do \
-		  echo "Processing $$dir"; \
-		  cd "$$dir"; \
-		  which tfswitch && tfswitch || true; \
-		  terraform init -reconfigure $(TF_INIT_ALL_OPTS); \
-		  terraform plan -lock-timeout=60s -var-file=terraform.tfvars $(TF_PLAN_ALL_OPTS); \
-		  cd "$$ROOT_DIR"; \
-		done
-
 .PHONY: terraform-apply
 terraform-apply: guard-SERVICE  ## Apply changes on infrastructure (SERVICE=xxx)
 	@printf "%b[%s] Apply infrastructure%b\n" "$(OK_COLOR)" "$(BANNER)" "$(NO_COLOR)"
@@ -77,24 +60,6 @@ terraform-apply: guard-SERVICE  ## Apply changes on infrastructure (SERVICE=xxx)
 		&& ( which tfswitch && tfswitch || true ) \
 		&& terraform init -reconfigure \
 		&& terraform apply -lock-timeout=60s -var-file=terraform.tfvars
-
-.PHONY: terraform-apply-all
-terraform-apply-all:  ## Apply changes on infrastructure for all services
-	@printf "%b[%s] Apply all infrastructure%b\n" "$(OK_COLOR)" "$(BANNER)" "$(NO_COLOR)"
-	@ROOT_DIR=$$(pwd); \
-	find . -type f -name "main.tf" \
-		-not -path "./infrastructure/_modules/*" \
-		-not -path "*/.terraform/*" \
-		-exec dirname {} \; \
-		| sort -u \
-		| while read dir; do \
-		  echo "Processing $$dir"; \
-		  cd "$$dir"; \
-		  which tfswitch && tfswitch || true; \
-		  terraform init -reconfigure $(TF_INIT_ALL_OPTS); \
-		  terraform apply -lock-timeout=60s -var-file=terraform.tfvars $(TF_APPLY_ALL_OPTS); \
-		  cd "$$ROOT_DIR"; \
-		done
 
 .PHONY: terraform-providers-lock
 terraform-providers-lock: guard-SERVICE  ## Make multiplatform providers locks (SERVICE=xxx)
@@ -107,7 +72,9 @@ terraform-providers-lock: guard-SERVICE  ## Make multiplatform providers locks (
 .PHONY: terraform-providers-lock-all
 terraform-providers-lock-all:  ## Make multiplatform providers locks for all services
 	@printf "%b[%s] Lock all providers%b\n" "$(OK_COLOR)" "$(BANNER)" "$(NO_COLOR)"
-	@find . -type f -name "main.tf" \
+	@ROOT_DIR=$$(pwd); \
+	set -e; \
+	find . -type f -name "main.tf" \
 		-not -path "./infrastructure/_modules/*" \
 		-not -path "*/.terraform/*" \
 		-exec dirname {} \; \
@@ -115,7 +82,7 @@ terraform-providers-lock-all:  ## Make multiplatform providers locks for all ser
 		| while read dir; do \
 		  echo "Processing $$dir"; \
 		  cd "$$dir"; \
-		  which tfswitch && tfswitch || true; \
+		  ( which tfswitch && tfswitch || true ); \
 		  terraform init -reconfigure $(TF_INIT_ALL_OPTS); \
 		  terraform providers lock -platform=darwin_amd64 -platform=linux_amd64 -platform=darwin_arm64; \
 		  cd "$$ROOT_DIR"; \
@@ -131,7 +98,9 @@ terraform-upgrade:  ## Upgrade terraform providers
 .PHONY: terraform-upgrade-all
 terraform-upgrade-all:  ## Upgrade all terraform providers
 	@printf "%b[%s] Upgrade terraform providers%b\n" "$(OK_COLOR)" "$(BANNER)" "$(NO_COLOR)"
-	@find . -type f -name "main.tf" \
+	@ROOT_DIR=$$(pwd); \
+	set -e; \
+	find . -type f -name "main.tf" \
 		-not -path "./infrastructure/_modules/*" \
 		-not -path "*/.terraform/*" \
 		-exec dirname {} \; \
@@ -139,7 +108,7 @@ terraform-upgrade-all:  ## Upgrade all terraform providers
 		| while read dir; do \
 		  echo "Processing $$dir"; \
 		  cd "$$dir"; \
-		  which tfswitch && tfswitch || true; \
+		  ( which tfswitch && tfswitch || true ); \
 		  terraform init -upgrade $(TF_INIT_ALL_OPTS); \
 		  cd "$$ROOT_DIR"; \
 		done

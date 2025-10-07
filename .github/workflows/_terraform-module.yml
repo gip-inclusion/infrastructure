@@ -1,0 +1,260 @@
+name: _terraform-module
+on:
+  # Reusable workflow called by the orchestrator job
+  workflow_call:
+    inputs:
+      module_path:
+        description: "Module path (terraform directory)"
+        required: true
+        type: string
+      module_label:
+        description: "Short label for display (project/resource_type/...)"
+        required: true
+        type: string
+      commit_sha:
+        description: "Commit SHA used as key for the plan artifact"
+        required: true
+        type: string
+      apply:
+        description: "true to run apply, otherwise plan only"
+        default: false
+        type: boolean
+    secrets:
+      SCW_TF_CI_ACCESS_KEY: { required: true }
+      SCW_TF_CI_SECRET_KEY: { required: true }
+      SCW_DEFAULT_PROJECT_ID: { required: true }
+      SCW_ORGANIZATION_ID: { required: true }
+      AGE_PRIVATE_KEY: { required: true }
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  terraform:
+    name: Terraform ${{ inputs.module_label }}
+    runs-on: ubuntu-latest
+
+    # Ensure only one run per module at a time (avoid race conditions)
+    concurrency:
+      group: tf-${{ inputs.module_path }}
+      cancel-in-progress: false
+
+    env:
+      SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+      SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      SCW_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+      SCW_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+      SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      MODULE_PATH: ${{ inputs.module_path }}
+      MODULE_LABEL: ${{ inputs.module_label }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+
+      - name: Install AGE
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Install AGE (latest)"
+
+          # Fetch the last version using the /releases/latest redirection
+          version="$(curl -fsSLI -o /dev/null -w '%{url_effective}' -L https://github.com/FiloSottile/age/releases/latest \
+                     | sed --regexp-extended 's#.*/tag/v([^/]+)$#\1#')"
+          echo "Latest age version: $version"
+
+          url="https://github.com/FiloSottile/age/releases/download/v${version}/age-v${version}-linux-amd64.tar.gz"
+          tmp="$(mktemp -d)"
+          curl -fsSL "$url" | tar -xz -C "$tmp"
+
+          sudo install -m 0755 "$tmp/age/age"        /usr/local/bin/age
+          sudo install -m 0755 "$tmp/age/age-keygen" /usr/local/bin/age-keygen
+
+          # Check installation is OK
+          /usr/local/bin/age --version || true
+          echo "::endgroup::"
+
+      - name: Populating env vars
+        shell: bash
+        run: |
+          set -euo pipefail
+          module_id="$(printf '%s' "$MODULE_PATH" | sed 's#/#__#g')"
+          echo "MODULE_ID=$module_id" >> "$GITHUB_ENV"
+          echo "PLAN_DIR=/dev/shm/tfplan" >> "$GITHUB_ENV"
+          echo "PLAN_BIN=/dev/shm/tfplan/tfplan.bin" >> "$GITHUB_ENV"
+
+      - name: Terraform fmt
+        if: always()
+        working-directory: ${{ env.MODULE_PATH }}
+        run: |
+          set -euo pipefail
+          terraform fmt -check -diff -recursive
+
+      - name: Terraform docs
+        if: always()
+        uses: terraform-docs/gh-actions@6de6da0cefcc6b4b7a5cbea4d79d97060733093c # v1.4.1
+        with:
+          working-dir: ${{ env.MODULE_PATH }}
+          output-method: inject
+          output-file: README.md
+          fail-on-diff: "true"
+
+      - name: Terraform validate
+        if: always()
+        working-directory: ${{ env.MODULE_PATH }}
+        run: |
+          terraform init -reconfigure -input=false
+          terraform validate -no-color
+
+      - name: Terraform plan
+        if: ${{ success() && !inputs.apply }}
+        working-directory: ${{ env.MODULE_PATH }}
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p "$PLAN_DIR"
+          terraform plan -lock-timeout=60s -var-file=terraform.tfvars -input=false -out "$PLAN_BIN"
+          terraform show -json "$PLAN_BIN" > "$PLAN_DIR/tfplan.json"
+          terraform show -no-color "$PLAN_BIN" > "$PLAN_DIR/tfplan.txt"
+          sha256sum "$PLAN_BIN" | awk '{print $1}' > "$PLAN_DIR/tfplan.sha256"
+
+      - name: Summarize plan in job summary
+        if: ${{ success() && !inputs.apply }}
+        working-directory: ${{ env.MODULE_PATH }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Count actions from human output
+          creates=$(grep -c "will be created" "$PLAN_DIR/tfplan.txt" || true)
+          updates=$(grep -c "will be updated in-place" "$PLAN_DIR/tfplan.txt" || true)
+          replaces=$(grep -c "must be replaced" "$PLAN_DIR/tfplan.txt" || true)
+          destroys=$(grep -c "will be destroyed" "$PLAN_DIR/tfplan.txt" || true)
+
+          {
+            echo "### Résumé du plan pour \`${MODULE_LABEL}\`"
+            echo
+            echo "| Créations | Mises à jour | Remplacements | Destructions |"
+            echo "|----------:|-------------:|--------------:|-------------:|"
+            echo "| $creates  | $updates     | $replaces     | $destroys    |"
+            echo
+            echo "<details><summary>Voir le plan complet</summary>"
+            echo
+            echo '```hcl'
+            sed --expression='s/```/`\`\`/g' "$PLAN_DIR/tfplan.txt"
+            echo
+            echo '```'
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Encrypt plan with AGE
+        if: ${{ success() && !inputs.apply }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cleanup() {
+            rm -f "$PLAN_BIN" "$PLAN_DIR/tfplan.txt" "$PLAN_DIR/tfplan.json"
+          }
+          trap cleanup EXIT INT TERM
+
+          test -n "${{ vars.AGE_PUBLIC_KEY }}"
+          age -r "${{ vars.AGE_PUBLIC_KEY }}" -o "$PLAN_DIR/tfplan.bin.age" "$PLAN_BIN"
+
+      - name: Upload plan artifact
+        if: ${{ success() && !inputs.apply }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: tfplan-${{ inputs.commit_sha }}-${{ env.MODULE_ID }}
+          path: |
+            ${{ env.PLAN_DIR }}/tfplan.bin.age
+            ${{ env.PLAN_DIR }}/tfplan.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Find PR & PR head SHA for this commit
+        if: ${{ success() && inputs.apply }}
+        id: find_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Retrieve the PR associated to the commit pushed on main
+          pr_number="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${{ inputs.commit_sha }}/pulls" --jq '.[0].number // empty')"
+          test -n "$pr_number" || { echo "::error::No PR found for commit ${{ inputs.commit_sha }}"; exit 1; }
+          echo "pr-number=$pr_number" >> "$GITHUB_OUTPUT"
+
+          # Retrieve the PR head SHA (commit on which the plan was performed)
+          pr_head_sha="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pr_number}" --jq '.head.sha // empty')"
+          test -n "$pr_head_sha" || { echo "::error::No PR head SHA found for PR #$pr_number"; exit 1; }
+          echo "plan-sha=$pr_head_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Find PR plan run-id
+        if: ${{ success() && inputs.apply }}
+        id: find_run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          run_id="$(
+            gh api --method GET "repos/${GITHUB_REPOSITORY}/actions/workflows/terraform-orchestrator.yml/runs" \
+              -f event=pull_request \
+              -f head_sha='${{ steps.find_pr.outputs.plan-sha }}' \
+              -F per_page=1 \
+              --jq '.workflow_runs[0].id // empty'
+          )"
+          test -n "$run_id" || { echo "::error::No PR workflow run found for head_sha=${{ steps.find_pr.outputs.plan-sha }}"; exit 1; }
+          echo "run-id=$run_id" >> "$GITHUB_OUTPUT"
+
+      - name: Download approved plan artifact
+        if: ${{ success() && inputs.apply }}
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: tfplan-${{ steps.find_pr.outputs.plan-sha }}-${{ env.MODULE_ID }}
+          path: ${{ env.PLAN_DIR }}
+          run-id: ${{ steps.find_run.outputs.run-id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Decrypt plan
+        if: ${{ success() && inputs.apply }}
+        env:
+          AGE_PRIVATE_KEY: ${{ secrets.AGE_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$AGE_PRIVATE_KEY"
+          printf '%s\n' "$AGE_PRIVATE_KEY" | age -d -i - -o "$PLAN_DIR/tfplan.bin" "$PLAN_DIR/tfplan.bin.age"
+
+      - name: Verify plan checksum
+        if: ${{ success() && inputs.apply }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$PLAN_DIR"
+          test -f tfplan.bin && test -f tfplan.sha256
+          echo "Expected SHA256: $(cat tfplan.sha256)"
+          echo "$(cat tfplan.sha256)  tfplan.bin" | sha256sum -c -
+
+      - name: Terraform apply (from approved plan)
+        if: ${{ success() && inputs.apply }}
+        working-directory: ${{ env.MODULE_PATH }}
+        run: |
+          set -u
+          terraform apply -input=false -lock-timeout=60s "$PLAN_DIR/tfplan.bin"
+
+      - name: Wipe decrypted plan
+        if: ${{ always() && inputs.apply }}
+        shell: bash
+        run: |
+          set -u
+          rm -rf "$PLAN_DIR"
