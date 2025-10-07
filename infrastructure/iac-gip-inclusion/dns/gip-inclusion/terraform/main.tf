@@ -36,6 +36,7 @@ module "dns-gip-inclusion" {
       type = "CNAME"
       ttl  = 10800
     },
+    # TXT record for Riot auth
     "google-site-verification-YGht5" = {
       name = ""
       data = "google-site-verification=YGht5JTr0ujMA6cSZrZ9ysejKIn4ESV0v_ZQHL0hPqE"
