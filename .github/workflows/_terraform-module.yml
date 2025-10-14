@@ -20,6 +20,7 @@ on:
         default: false
         type: boolean
     secrets:
+      SCALINGO_API_TOKEN: { required: true }
       SCW_TF_CI_ACCESS_KEY: { required: true }
       SCW_TF_CI_SECRET_KEY: { required: true }
       SCW_DEFAULT_PROJECT_ID: { required: true }
@@ -116,6 +117,8 @@ jobs:
       - name: Terraform plan
         if: ${{ success() && !inputs.apply }}
         working-directory: ${{ env.MODULE_PATH }}
+        env:
+          TF_VAR_scalingo_api_token: ${{ secrets.SCALINGO_SERVICE_PROD_API_TOKEN }}
         run: |
           set -euo pipefail
           umask 077
@@ -248,6 +251,8 @@ jobs:
       - name: Terraform apply (from approved plan)
         if: ${{ success() && inputs.apply }}
         working-directory: ${{ env.MODULE_PATH }}
+        env:
+          TF_VAR_scalingo_api_token: ${{ secrets.SCALINGO_SERVICE_PROD_API_TOKEN }}
         run: |
           set -u
           terraform apply -input=false -lock-timeout=60s "$PLAN_DIR/tfplan.bin"
