@@ -45,19 +45,21 @@ resource "scaleway_iam_policy" "terraform_ci" {
     ]
   }
   rule {
-    project_ids          = [data.scaleway_account_project.terraform.project_id]
-    permission_set_names = ["ObjectStorageFullAccess"]
+    project_ids = [data.scaleway_account_project.terraform.project_id]
+    permission_set_names = [
+      "ObjectStorageFullAccess",
+    ]
   }
   rule {
     project_ids = [data.scaleway_account_project.emplois_cnav.project_id]
     permission_set_names = [
-      "ContainerRegistryFullAccess",
-      "SecretManagerFullAccess",
       "BlockStorageFullAccess",
-      "IPAMFullAccess",
+      "ContainerRegistryFullAccess",
       "InstancesFullAccess",
+      "IPAMFullAccess",
       "KubernetesFullAccess",
       "PrivateNetworksFullAccess",
+      "SecretManagerFullAccess",
       "SecretManagerFullAccess",
       "SSHKeysFullAccess",
       "VPCFullAccess",
