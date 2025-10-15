@@ -23,7 +23,7 @@ module "dns-dora" {
     },
     "staging-website" = {
       name = "staging.dora"
-      data = "dora-front-staging.osc-secnum-fr1.scalingo.io."
+      data = "dora-front-staging.osc-fr1.scalingo.io."
       type = "CNAME"
       ttl  = 300
     },
@@ -35,7 +35,7 @@ module "dns-dora" {
     },
     "staging-api" = {
       name = "api.staging.dora"
-      data = "dora-back-staging.osc-secnum-fr1.scalingo.io."
+      data = "dora-back-staging.osc-fr1.scalingo.io."
       type = "CNAME"
       ttl  = 300
     },
