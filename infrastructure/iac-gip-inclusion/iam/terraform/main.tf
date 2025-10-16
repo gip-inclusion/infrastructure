@@ -69,8 +69,7 @@ resource "scaleway_iam_policy" "terraform_ci" {
   rule {
     project_ids = [data.scaleway_account_project.site_institutionnel_2025.project_id]
     permission_set_names = [
-      "ObjectStorageBucketsRead",
-      "ObjectStorageBucketsWrite",
+      "ObjectStorageFullAccess",
     ]
   }
 }
