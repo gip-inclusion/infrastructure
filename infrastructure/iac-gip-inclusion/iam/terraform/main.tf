@@ -38,36 +38,20 @@ resource "scaleway_iam_policy" "terraform_ci" {
       "ProjectManager",
     ]
   }
+  # Grant full access to the terraform application for projects managed by Terraform
   rule {
-    project_ids = [data.scaleway_account_project.default.project_id]
+    project_ids = [
+      data.scaleway_account_project.default.project_id,
+      data.scaleway_account_project.emplois_cnav.project_id,
+      data.scaleway_account_project.site_institutionnel_2025.project_id
+    ]
     permission_set_names = [
-      "DomainsDNSFullAccess",
+      "AllProductsFullAccess",
     ]
   }
+  # Although it is managed by Terraform, this project is meant to store solely Terraform states
   rule {
     project_ids = [data.scaleway_account_project.terraform.project_id]
-    permission_set_names = [
-      "ObjectStorageFullAccess",
-    ]
-  }
-  rule {
-    project_ids = [data.scaleway_account_project.emplois_cnav.project_id]
-    permission_set_names = [
-      "BlockStorageFullAccess",
-      "ContainerRegistryFullAccess",
-      "InstancesFullAccess",
-      "IPAMFullAccess",
-      "KubernetesFullAccess",
-      "PrivateNetworksFullAccess",
-      "SecretManagerFullAccess",
-      "SecretManagerFullAccess",
-      "SSHKeysFullAccess",
-      "VPCFullAccess",
-      "VPCGatewayFullAccess",
-    ]
-  }
-  rule {
-    project_ids = [data.scaleway_account_project.site_institutionnel_2025.project_id]
     permission_set_names = [
       "ObjectStorageFullAccess",
     ]
