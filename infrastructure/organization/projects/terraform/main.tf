@@ -7,8 +7,13 @@ terraform {
   required_version = ">= 1.10"
 }
 
-resource "scaleway_account_project" "default" {
-  name = "default"
+resource "scaleway_account_project" "iac_gip_inclusion" {
+  name = "iac-gip-inclusion"
+}
+
+moved {
+  from = scaleway_account_project.default
+  to   = scaleway_account_project.iac_gip_inclusion
 }
 
 resource "scaleway_account_project" "terraform" {
