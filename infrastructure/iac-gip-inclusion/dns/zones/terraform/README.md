@@ -11,6 +11,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.55.0 |
+| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.55.0 |
 
 ## Modules
 
@@ -21,6 +22,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [scaleway_domain_zone.zone_root](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/domain_zone) | resource |
+| [scaleway_account_project.iac_gip_inclusion](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
 
 ## Inputs
 
