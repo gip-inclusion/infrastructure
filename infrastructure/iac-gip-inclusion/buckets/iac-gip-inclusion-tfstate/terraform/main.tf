@@ -14,23 +14,20 @@ terraform {
 */
 
 resource "scaleway_object_bucket" "gip_inclusion_terraform_state" {
-  provider   = scaleway
-  name       = "gip-inclusion-state"
-  project_id = data.scaleway_account_project.terraform.id
+  provider = scaleway
+  name     = "gip-inclusion-state"
   versioning { enabled = true }
 }
 
 resource "scaleway_object_bucket_acl" "state_bucket_acl" {
-  bucket     = scaleway_object_bucket.gip_inclusion_terraform_state.id
-  project_id = data.scaleway_account_project.terraform.id
-  acl        = "private"
+  bucket = scaleway_object_bucket.gip_inclusion_terraform_state.id
+  acl    = "private"
 }
 
 resource "scaleway_object_bucket_policy" "state_bucket_policy" {
   # Configure bucket before to set a restrictive policy.
   depends_on = [scaleway_object_bucket_acl.state_bucket_acl]
   bucket     = scaleway_object_bucket.gip_inclusion_terraform_state.id
-  project_id = scaleway_object_bucket.gip_inclusion_terraform_state.project_id
   policy = jsonencode(
     {
       Version = "2023-04-17",
