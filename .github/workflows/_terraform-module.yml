@@ -20,6 +20,7 @@ on:
         default: false
         type: boolean
     secrets:
+      SCALINGO_API_TOKEN: { required: true }
       SCW_TF_CI_ACCESS_KEY: { required: true }
       SCW_TF_CI_SECRET_KEY: { required: true }
       SCW_DEFAULT_PROJECT_ID: { required: true }
@@ -42,6 +43,7 @@ jobs:
       cancel-in-progress: false
 
     env:
+      TF_VAR_scalingo_api_token: ${{ secrets.SCALINGO_SERVICE_PROD_API_TOKEN }}
       SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
       SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
       SCW_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
