@@ -25,8 +25,8 @@ No modules.
 | [scaleway_iam_group.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_group) | resource |
 | [scaleway_iam_policy.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_policy) | resource |
 | [scaleway_iam_policy.terraform_ci](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_policy) | resource |
-| [scaleway_account_project.default](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
 | [scaleway_account_project.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
+| [scaleway_account_project.iac_gip_inclusion](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
 | [scaleway_account_project.site_institutionnel_2025](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
 | [scaleway_account_project.terraform](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
 

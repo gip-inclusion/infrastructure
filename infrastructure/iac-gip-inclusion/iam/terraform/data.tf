@@ -1,5 +1,5 @@
-data "scaleway_account_project" "default" {
-  name = "default"
+data "scaleway_account_project" "iac_gip_inclusion" {
+  name = "iac-gip-inclusion"
 }
 
 data "scaleway_account_project" "terraform" {
