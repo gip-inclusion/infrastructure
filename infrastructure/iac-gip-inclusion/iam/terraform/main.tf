@@ -32,7 +32,7 @@ resource "scaleway_iam_policy" "terraform_ci" {
   description    = var.managed
   application_id = scaleway_iam_application.terraform_ci.id
   rule {
-    organization_id = data.scaleway_account_project.default.organization_id
+    organization_id = data.scaleway_account_project.iac_gip_inclusion.organization_id
     permission_set_names = [
       "IAMManager",
       "ProjectManager",
@@ -41,7 +41,7 @@ resource "scaleway_iam_policy" "terraform_ci" {
   # Grant full access to the terraform application for projects managed by Terraform
   rule {
     project_ids = [
-      data.scaleway_account_project.default.project_id,
+      data.scaleway_account_project.iac_gip_inclusion.project_id,
       data.scaleway_account_project.emplois_cnav.project_id,
       data.scaleway_account_project.site_institutionnel_2025.project_id
     ]
