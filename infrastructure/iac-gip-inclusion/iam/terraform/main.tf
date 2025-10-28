@@ -69,3 +69,38 @@ resource "scaleway_iam_policy" "emplois_cnav" {
     ]
   }
 }
+
+resource "scaleway_iam_application" "github_backups" {
+  name        = "github-backups"
+  description = var.managed
+}
+
+resource "scaleway_iam_api_key" "github_backups_api_key" {
+  application_id = scaleway_iam_application.github_backups.id
+  description    = var.managed
+}
+
+resource "scaleway_iam_policy" "github_backups" {
+  name           = "github-backups"
+  description    = var.managed
+  application_id = scaleway_iam_application.github_backups.id
+  rule {
+    project_ids = [data.scaleway_account_project.default.project_id]
+    permission_set_names = [
+      "ObjectStorageBucketsRead",
+      "ObjectStorageObjectsRead",
+      "ObjectStorageObjectsWrite",
+    ]
+  }
+}
+
+resource "scaleway_secret_version" "github_backups_api_key" {
+  description = var.managed
+  secret_id   = data.scaleway_secret.github_backups_api_key.id
+  data = jsonencode(
+    {
+      access_key = scaleway_iam_api_key.github_backups_api_key.access_key
+      secret_key = scaleway_iam_api_key.github_backups_api_key.secret_key
+    }
+  )
+}
