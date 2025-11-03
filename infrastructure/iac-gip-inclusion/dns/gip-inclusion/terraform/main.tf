@@ -78,7 +78,7 @@ module "dns-gip-inclusion" {
     },
     "website" = {
       name = ""
-      data = "gip-inclusion-website-production.osc-secnum-fr1.scalingo.io."
+      data = "site-institutionnel-2025-proxy.osc-fr1.scalingo.io."
       type = "ALIAS"
     },
   }
