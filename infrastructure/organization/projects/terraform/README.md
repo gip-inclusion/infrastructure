@@ -21,6 +21,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [scaleway_account_project.do_not_use](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/account_project) | resource |
 | [scaleway_account_project.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/account_project) | resource |
 | [scaleway_account_project.iac_gip_inclusion](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/account_project) | resource |
 | [scaleway_account_project.site_institutionnel_2025](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/account_project) | resource |
