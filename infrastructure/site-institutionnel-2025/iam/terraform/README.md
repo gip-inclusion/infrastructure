@@ -8,7 +8,7 @@ Ce module Terraform crée et configure les ressources nécessaires pour se conne
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10 |
-| <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | 2.55.0 |
+| <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | >= 2.55.0 |
 
 ## Providers
 
@@ -24,10 +24,10 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [scaleway_iam_api_key.api_key](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_api_key) | resource |
-| [scaleway_iam_application.app](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_application) | resource |
-| [scaleway_iam_policy.policy](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/iam_policy) | resource |
-| [scaleway_account_project.site_institutionnel_2025](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/data-sources/account_project) | data source |
+| [scaleway_iam_api_key.api_key](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_api_key) | resource |
+| [scaleway_iam_application.app](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_application) | resource |
+| [scaleway_iam_policy.policy](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_policy) | resource |
+| [scaleway_account_project.site_institutionnel_2025](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 
 ## Inputs
 
