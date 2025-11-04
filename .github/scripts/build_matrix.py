@@ -120,6 +120,8 @@ def build_matrix() -> None:
                 # Ignore markdown files
                 if not skip_md.search(filename)
                 if (module_path := module_re.match(filename))
+                # Ignore reusable modules
+                if not module_path.group(1).startswith("infrastructure/_modules/")
                 # Ignore deleted modules
                 if (Path(WORKSPACE) / module_path.group(1)).is_dir()
             }
