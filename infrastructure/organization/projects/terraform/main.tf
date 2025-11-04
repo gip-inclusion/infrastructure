@@ -23,8 +23,6 @@ resource "scaleway_account_project" "do_not_use" {
     ${var.managed}
     This project should not have any resources, it is only intended to be
     Scaleway’s console default project.
-    Use Terraform https://github.com/gip-inclusion/infrastructure to manage
-    resources.
     EOT
 }
 
