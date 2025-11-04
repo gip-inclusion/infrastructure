@@ -4,13 +4,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10 |
-| <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | 2.55.0 |
+| <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | >= 2.55.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.55.0 |
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | >= 2.55.0 |
 
 ## Modules
 
@@ -20,7 +20,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [scaleway_domain_record.records](https://registry.terraform.io/providers/scaleway/scaleway/2.55.0/docs/resources/domain_record) | resource |
+| [scaleway_domain_record.records](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/domain_record) | resource |
 
 ## Inputs
 
