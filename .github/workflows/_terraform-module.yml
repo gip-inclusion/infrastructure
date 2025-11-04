@@ -110,7 +110,7 @@ jobs:
         if: always()
         working-directory: ${{ env.MODULE_PATH }}
         run: |
-          terraform init -reconfigure -input=false
+          terraform init -reconfigure -input=false -lockfile=readonly
           terraform validate -no-color
 
       - name: Terraform plan
