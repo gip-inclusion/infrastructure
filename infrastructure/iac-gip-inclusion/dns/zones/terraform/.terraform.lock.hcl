@@ -2,8 +2,11 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/scaleway/scaleway" {
-  version = "2.55.0"
+  version     = "2.55.0"
+  constraints = "2.55.0"
   hashes = [
+    "h1:Aa8iuWqdjnW0CfDcUNlyJu9GidZZdfeMZuNrvak/AM4=",
+    "h1:cI3YY+m2C0pDR9tdt8ESd2/U2/0yfR9XCAXpVD/f62c=",
     "h1:pNP7PPFi3qRIwhQklZEuQyqI7pHY3DWf0yYr1B+/PS8=",
     "zh:07efa9277b5c664e30c84a441b3fd7bb689d92a35fa06d1fff803f5e6891eecf",
     "zh:1c0c5bf00e501f259bc5f2b5ec523fb83117ea434951ecab42e096d2c9646e4e",
