@@ -111,7 +111,7 @@ def build_matrix() -> None:
                     files.append(columns[1])
 
         # Normalize to modules root (`infrastructure/.../terraform`)
-        module_re = re.compile(r"^(infrastructure/.*/terraform)(?:/.*)?$")
+        module_re = re.compile(r"^(infrastructure/[^_].*/terraform)(?:/.*)?$")
         skip_md = re.compile(r"\.(md|markdown)$", re.I)
         changed_modules = sorted(
             {
