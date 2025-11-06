@@ -54,6 +54,11 @@ module "dns-gip-inclusion" {
       type = "CNAME"
       ttl  = 10800
     }
+    "matomo" = {
+      name = "matomo"
+      data = "inclusion-matomo-production.osc-secnum-fr1.scalingo.io."
+      type = "CNAME"
+    }
     "notion-dcv.pages" = {
       name = "_notion-dcv.pages"
       data = "1295f321-b604-81f8-8544-007038d42424"
