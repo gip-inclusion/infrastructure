@@ -212,8 +212,8 @@ shred -u terraform.tfstate.backup terraform.tfstate.current
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.55.0 |
-| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.55.0 |
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.61.0 |
+| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.61.0 |
 
 ## Modules
 
