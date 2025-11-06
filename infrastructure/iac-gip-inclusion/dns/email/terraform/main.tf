@@ -70,7 +70,7 @@ module "dns-email" {
     },
     "mta-sts-site" = {
       name = "mta-sts"
-      data = "inclusion.gouv.fr."
+      data = "mta-sts.osc-fr1.scalingo.io."
       type = "CNAME"
     },
     "mta-sts-txt" = {
