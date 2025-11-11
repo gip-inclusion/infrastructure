@@ -12,3 +12,10 @@ updates:
       - /infrastructure/**/terraform/
     schedule:
       interval: daily
+    groups:
+      scaleway:
+        patterns:
+          - scaleway/scaleway
+      github:
+        patterns:
+          - integrations/github
