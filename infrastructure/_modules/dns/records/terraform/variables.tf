@@ -8,6 +8,11 @@ variable "scw_zone" {
   description = "Scaleway zone for resources"
 }
 
+variable "scw_project_id" {
+  type        = string
+  description = "Scaleway project_id for resources"
+}
+
 variable "records" {
   type = map(object({
     name     = string
