@@ -31,6 +31,11 @@ resource "scaleway_account_project" "terraform" {
   description = var.managed
 }
 
+resource "scaleway_account_project" "backups" {
+  name        = "backups"
+  description = var.managed
+}
+
 resource "scaleway_account_project" "emplois_cnav" {
   name        = "emplois-cnav"
   description = var.managed
