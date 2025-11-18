@@ -17,15 +17,6 @@ moved {
   to   = scaleway_account_project.iac_gip_inclusion
 }
 
-resource "scaleway_account_project" "do_not_use" {
-  name        = "do-not-use"
-  description = <<EOT
-    ${var.managed}
-    This project should not have any resources, it is only intended to be
-    Scaleway’s console default project.
-    EOT
-}
-
 resource "scaleway_account_project" "terraform" {
   name        = "terraform"
   description = var.managed
