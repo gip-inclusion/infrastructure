@@ -35,30 +35,6 @@ Infrastructure as Code (IaC) pour le déploiement de l'infrastructure GIP Inclus
    📝 [README du bucket de state](infrastructure/iac-gip-inclusion/buckets/iac-gip-inclusion-tfstate/terraform/README.md)
 
 
-## 🏗️ Ressources
-
-**Aucune ressource dans le projet par défaut** (qui a le même UUID que
-l’organisation).
-
-Le projet par défaut est utilisé par les utilisateurs console,
-ce qui conduit à un risque important de _drift_ (un utilisateur modifie une
-ressource en console sans mettre à jour le _state_ Terraform), et diminue les
-bénéfices de l’IaC :
-
-- la déclaration n’est pas l’état réel de la ressource, rendant la documentation inexacte,
-- peut conduire Terraform à effectuer des opérations incorrectes sur les ressources.
-
-La seule exception à cette règle concerne les enregistrements DNS, car la zone
-racine **doit** être située dans le projet par défaut (limitation confirmée par
-le support Scaleway).
-
-La gestion des ressources organisationnelles (IAM, projets) se fait dans le
-module `infrastructure/organization/`.
-
-Les autres ressources sont déclarées dans un projet dédié. Si les ressources
-sont transverses, elles se situent dans `infrastructure/iac-gip-inclusion/`.
-Chaque produit peut également créer des projets pour organiser ses ressources.
-
 ## 📝 Utilisation
 
 ### Commandes Make disponibles
