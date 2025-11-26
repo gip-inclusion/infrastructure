@@ -11,8 +11,9 @@ terraform {
 module "dns-email" {
   source = "../../../../_modules/dns/records/terraform"
 
-  scw_region = var.scw_region
-  scw_zone   = var.scw_zone
+  scw_region     = var.scw_region
+  scw_zone       = var.scw_zone
+  scw_project_id = data.scaleway_account_project.iac_gip_inclusion.project_id
 
   records = {
     # Umbrella Brevo organization, root of all Brevo sub-projects.
