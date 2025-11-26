@@ -1,0 +1,27 @@
+name: dependabot-autofix
+
+on: pull_request
+
+permissions:
+  contents: write
+
+jobs:
+  autofix:
+    # https://docs.github.com/en/code-security/dependabot/troubleshooting-dependabot/troubleshooting-dependabot-on-github-actions
+    if: github.triggering_actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
+
+      - name: Generate Terraform docs
+        uses: terraform-docs/gh-actions@6de6da0cefcc6b4b7a5cbea4d79d97060733093c # v1.4.1
+        with:
+          find-dir: infrastructure
+          git-commit-message: "docs: update terraform docs"
+          git-push: "true"
+          git-push-user-name: "terraform-docs[bot]"
