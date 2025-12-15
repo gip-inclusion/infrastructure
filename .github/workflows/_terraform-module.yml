@@ -113,6 +113,40 @@ jobs:
           terraform init -reconfigure -input=false -lockfile=readonly
           terraform validate -no-color
 
+      - name: Run tfsec security scan
+        if: always()
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          working_directory: ${{ env.MODULE_PATH }}
+          soft_fail: false
+          format: sarif
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload tfsec SARIF to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+          category: tfsec
+
+      - name: Run Checkov IaC security scan
+        if: always()
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: ${{ env.MODULE_PATH }}
+          framework: terraform
+          soft_fail: false
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          skip_check: CKV_GIT_1  # Skip git history check (not relevant for IaC)
+
+      - name: Upload Checkov SARIF to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: checkov-results.sarif
+          category: checkov
+
       - name: Terraform plan
         if: ${{ success() && !inputs.apply }}
         working-directory: ${{ env.MODULE_PATH }}
