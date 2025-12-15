@@ -115,7 +115,7 @@ jobs:
 
       - name: Run tfsec security scan
         if: always()
-        uses: aquasecurity/tfsec-action@v1.0.3
+        uses: aquasecurity/tfsec-action@b466648d6e39e7c75324f25d83891162a721f2d6
         with:
           working_directory: ${{ env.MODULE_PATH }}
           soft_fail: false
@@ -124,25 +124,25 @@ jobs:
 
       - name: Upload tfsec SARIF to GitHub Security
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@d378195403bf7cd9c9b55e4713ede0962aa58b83
         with:
           sarif_file: results.sarif
           category: tfsec
 
       - name: Run Checkov IaC security scan
         if: always()
-        uses: bridgecrewio/checkov-action@v12
+        uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf
         with:
           directory: ${{ env.MODULE_PATH }}
           framework: terraform
           soft_fail: false
           output_format: sarif
           output_file_path: checkov-results.sarif
-          skip_check: CKV_GIT_1  # Skip git history check (not relevant for IaC)
+          skip_check: CKV_GIT_1
 
       - name: Upload Checkov SARIF to GitHub Security
         if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@d378195403bf7cd9c9b55e4713ede0962aa58b83
         with:
           sarif_file: checkov-results.sarif
           category: checkov
