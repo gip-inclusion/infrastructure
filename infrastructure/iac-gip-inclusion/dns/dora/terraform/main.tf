@@ -45,6 +45,16 @@ module "dns-dora" {
       data = "dora-metabase-v2.osc-secnum-fr1.scalingo.io."
       type = "CNAME"
       ttl  = 300
+    },
+    "help-page" = {
+      name = "aide.dora"
+      data = "custom.crisp.help."
+      type = "CNAME"
+    },
+    "crisp" = {
+      name = "_crisp.aide.dora"
+      data = "crisp-website-id=f2839d07-9b42-477f-8bce-cf4adbda113e"
+      type = "TXT"
     }
   }
 }
