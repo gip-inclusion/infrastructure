@@ -25,6 +25,9 @@ on:
       SCW_DEFAULT_PROJECT_ID: { required: true }
       SCW_ORGANIZATION_ID: { required: true }
       AGE_PRIVATE_KEY: { required: true }
+      GITHUB_APP_ID: { required: true }
+      GITHUB_APP_INSTALLATION_ID: { required: true }
+      GITHUB_APP_PEM_FILE: { required: true }
 
 permissions:
   contents: read
@@ -42,6 +45,7 @@ jobs:
       cancel-in-progress: false
 
     env:
+      # Scaleway provider credentials
       SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
       SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
       SCW_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
@@ -49,6 +53,11 @@ jobs:
       SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
       AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+      # GitHub provider credentials
+      TF_VAR_github_app_id: ${{ secrets.GITHUB_APP_ID }}
+      TF_VAR_github_app_installation_id: ${{ secrets.GITHUB_APP_INSTALLATION_ID }}
+      GITHUB_APP_PEM_FILE: ${{ secrets.GITHUB_APP_PEM_FILE }}
+      # Module info
       MODULE_PATH: ${{ inputs.module_path }}
       MODULE_LABEL: ${{ inputs.module_label }}
 
