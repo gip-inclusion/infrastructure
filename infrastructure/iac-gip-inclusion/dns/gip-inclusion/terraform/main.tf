@@ -37,6 +37,11 @@ module "dns-gip-inclusion" {
       type = "CNAME"
       ttl  = 10800
     },
+    "formulaires" = {
+      name = "formulaires"
+      data = "fagerh.osc-fr1.scalingo.io."
+      type = "CNAME"
+    },
     # TXT record for Google Search Console auth
     "google-site-verification-eIGx2" = {
       name = ""
