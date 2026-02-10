@@ -31,6 +31,11 @@ module "dns-gip-inclusion" {
       data = "calculette-nir-production.osc-fr1.scalingo.io."
       type = "CNAME"
     },
+    "formulaires" = {
+      name = "formulaires"
+      data = "fagerh.osc-fr1.scalingo.io."
+      type = "CNAME"
+    },
     "etudes" = {
       name = "etudes"
       data = "cname.tally.so."
