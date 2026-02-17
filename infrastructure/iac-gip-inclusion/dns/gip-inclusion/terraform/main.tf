@@ -82,6 +82,11 @@ module "dns-gip-inclusion" {
       data = "external.notion.site."
       type = "CNAME"
     },
+    "traiteurs-engages" = {
+      name = "traiteurs.engages"
+      data = "traiteurs-engages-tmp.osc-fr1.scalingo.io."
+      type = "CNAME"
+    },
     "website" = {
       name = ""
       data = "site-institutionnel-2025-proxy.osc-fr1.scalingo.io."
