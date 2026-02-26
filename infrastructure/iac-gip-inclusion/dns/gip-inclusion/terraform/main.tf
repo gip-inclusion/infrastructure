@@ -65,6 +65,11 @@ module "dns-gip-inclusion" {
       data = "inclusion-matomo-production.osc-secnum-fr1.scalingo.io."
       type = "CNAME"
     }
+    "matometa" = {
+      name = "matometa"
+      data = "matometa.osc-fr1.scalingo.io."
+      type = "CNAME"
+    }
     "notion-dcv.pages" = {
       name = "_notion-dcv.pages"
       data = "1295f321-b604-81f8-8544-007038d42424"
