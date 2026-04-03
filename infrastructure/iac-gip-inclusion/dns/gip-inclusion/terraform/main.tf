@@ -37,6 +37,12 @@ module "dns-gip-inclusion" {
       type = "CNAME"
       ttl  = 10800
     },
+    "explorations-nova" = {
+      name = "explorations-nova"
+      data = "novarw2u9ckv-explorations.functions.fnc.fr-par.scw.cloud."
+      type = "CNAME"
+      ttl  = 10800
+    },
     "formulaires" = {
       name = "formulaires"
       data = "fagerh.osc-fr1.scalingo.io."
