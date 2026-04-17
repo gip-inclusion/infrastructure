@@ -93,6 +93,12 @@ module "dns-gip-inclusion" {
       data = "external.notion.site."
       type = "CNAME"
     },
+    "tableaux" = {
+      name = "tableaux"
+      data = "tableaux-de-bord-publics.s3.fr-par.scw.cloud."
+      type = "CNAME"
+      ttl  = 10800
+    },
     "traiteurs-engages" = {
       name = "traiteurs.engages"
       data = "traiteurs-engages-tmp.osc-fr1.scalingo.io."
