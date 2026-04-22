@@ -16,6 +16,12 @@ module "dns-gip-inclusion" {
   scw_project_id = data.scaleway_account_project.iac_gip_inclusion.project_id
 
   records = {
+    "autometa" = {
+      name = "autometa"
+      data = "matometa.osc-fr1.scalingo.io."
+      type = "CNAME"
+      ttl  = 10800
+    },
     "bitwarden" = {
       name = "bitwarden"
       data = "bitwarden.inclusion.cloud-ed.fr."
@@ -92,6 +98,18 @@ module "dns-gip-inclusion" {
       name = "pages"
       data = "external.notion.site."
       type = "CNAME"
+    },
+    "staging-statistiques" = {
+      name = "staging.statistiques"
+      data = "tableaux-de-bord-staging.s3.fr-par.scw.cloud."
+      type = "CNAME"
+      ttl  = 10800
+    },
+    "statistiques" = {
+      name = "statistiques"
+      data = "tableaux-de-bord-publics.s3.fr-par.scw.cloud."
+      type = "CNAME"
+      ttl  = 10800
     },
     "traiteurs-engages" = {
       name = "traiteurs.engages"
