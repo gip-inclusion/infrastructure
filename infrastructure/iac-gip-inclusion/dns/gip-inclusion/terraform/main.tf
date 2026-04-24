@@ -101,13 +101,13 @@ module "dns-gip-inclusion" {
     },
     "staging-statistiques" = {
       name = "staging.statistiques"
-      data = "tableaux-de-bord-staging.s3.fr-par.scw.cloud."
+      data = "864ad022-99c1-4de3-bf18-850f2a689e19.svc.edge.scw.cloud."
       type = "CNAME"
       ttl  = 10800
     },
     "statistiques" = {
       name = "statistiques"
-      data = "tableaux-de-bord-publics.s3.fr-par.scw.cloud."
+      data = "2c42d742-9926-4bc2-915b-fcee66bae145.svc.edge.scw.cloud."
       type = "CNAME"
       ttl  = 10800
     },
