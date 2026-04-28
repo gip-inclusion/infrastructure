@@ -26,6 +26,11 @@ module "dns-gip-inclusion" {
       data = "51.15.213.160"
       type = "A"
     },
+    "connect" = {
+      name = "connect"
+      data = "app-67c39aa7-af32-4740-a673-81152b5453e7.cleverapps.io."
+      type = "CNAME"
+    },
     "cle-nir" = {
       name = "cle-nir"
       data = "calculette-nir-production.osc-fr1.scalingo.io."
