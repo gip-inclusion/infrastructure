@@ -113,7 +113,7 @@ module "dns-gip-inclusion" {
     },
     "traiteurs-engages" = {
       name = "traiteurs.engages"
-      data = "traiteurs-engages-tmp.osc-fr1.scalingo.io."
+      data = "proxy.applicatif.net."
       type = "CNAME"
     },
     "website" = {
