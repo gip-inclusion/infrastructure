@@ -8,6 +8,7 @@ terraform {
   required_version = ">= 1.10"
 }
 
+# Foo bar
 module "dns-gip-inclusion" {
   source = "../../../../_modules/dns/records/terraform"
 
