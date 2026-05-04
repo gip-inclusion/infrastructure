@@ -116,25 +116,10 @@ module "dns-gip-inclusion" {
       type = "CNAME"
       ttl  = 10800
     },
-    "traiteurs-engages-staging" = {
-      name = "staging.traiteurs-engages"
-      data = "traiteurs-engages-staging.osc-fr1.scalingo.io."
-      type = "CNAME"
-    },
-    "traiteurs-engages-prod" = {
-      name = "traiteurs.engages"
-      data = "proxy.applicatif.net."
-      type = "CNAME"
-    },
     "website" = {
       name = ""
       data = "site-institutionnel-2025-proxy.osc-fr1.scalingo.io."
       type = "ALIAS"
     },
   }
-}
-
-moved {
-  from = module.dns-gip-inclusion.scaleway_domain_record.records["traiteurs-engages"]
-  to   = module.dns-gip-inclusion.scaleway_domain_record.records["traiteurs-engages-prod"]
 }
