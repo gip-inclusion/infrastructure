@@ -133,6 +133,7 @@ jobs:
           set -euo pipefail
 
           # Count actions from human output
+          imports=$(grep -c "will be imported" "$PLAN_DIR/tfplan.txt" || true)
           creates=$(grep -c "will be created" "$PLAN_DIR/tfplan.txt" || true)
           updates=$(grep -c "will be updated in-place" "$PLAN_DIR/tfplan.txt" || true)
           replaces=$(grep -c "must be replaced" "$PLAN_DIR/tfplan.txt" || true)
@@ -141,9 +142,9 @@ jobs:
           {
             echo "### Résumé du plan pour \`${MODULE_LABEL}\`"
             echo
-            echo "| Créations | Mises à jour | Remplacements | Destructions |"
-            echo "|----------:|-------------:|--------------:|-------------:|"
-            echo "| $creates  | $updates     | $replaces     | $destroys    |"
+            echo "| Imports  | Créations | Mises à jour | Remplacements | Destructions |"
+            echo "|---------:|----------:|-------------:|--------------:|-------------:|"
+            echo "| $imports | $creates  | $updates     | $replaces     | $destroys    |"
             echo
             echo "<details><summary>Voir le plan complet</summary>"
             echo
