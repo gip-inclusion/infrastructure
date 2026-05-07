@@ -89,6 +89,7 @@ TODO à moyen terme :
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10 |
 | <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | >= 2.60.0 |
+| <a name="requirement_sops"></a> [sops](#requirement\_sops) | >= 1.4 |
 
 ## Providers
 
@@ -96,6 +97,7 @@ TODO à moyen terme :
 |------|---------|
 | <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.74.0 |
 | <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.74.0 |
+| <a name="provider_sops"></a> [sops](#provider\_sops) | 1.4.1 |
 
 ## Modules
 
@@ -115,9 +117,11 @@ No modules.
 | [scaleway_vpc_public_gateway_pat_rule.ipsec_nat_t](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/vpc_public_gateway_pat_rule) | resource |
 | [scaleway_account_project.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 | [scaleway_secret_version.cnav_vpn_config](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/secret_version) | data source |
+| [scaleway_vpc_private_network.kubernetes_private_network](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/vpc_private_network) | data source |
 | [scaleway_vpc_private_network.strongswan_private_network](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/vpc_private_network) | data source |
 | [scaleway_vpc_public_gateway.strongswan_public_gateway](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/vpc_public_gateway) | data source |
 | [scaleway_vpc_public_gateway_ip.strongswan_public_gateway_ip](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/vpc_public_gateway_ip) | data source |
+| [sops_file.secrets](https://registry.terraform.io/providers/carlpett/sops/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 

@@ -7,6 +7,10 @@ data "scaleway_vpc_private_network" "strongswan_private_network" {
   name = "emplois-cnav-strongswan-private-network"
 }
 
+data "scaleway_vpc_private_network" "kubernetes_private_network" {
+  name = "emplois-cnav-kubernetes-private-network"
+}
+
 data "scaleway_vpc_public_gateway" "strongswan_public_gateway" {
   name = "strongswan-public-gateway"
 }
@@ -19,4 +23,8 @@ data "scaleway_secret_version" "cnav_vpn_config" {
 
 data "scaleway_vpc_public_gateway_ip" "strongswan_public_gateway_ip" {
   ip_id = local.strongswan_public_gateway_ip.id # FIXME
+}
+
+data "sops_file" "secrets" {
+  source_file = "secrets.enc.yaml"
 }
