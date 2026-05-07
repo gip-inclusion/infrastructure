@@ -7,6 +7,7 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10 |
 | <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | >= 2.60.0 |
+| <a name="requirement_sops"></a> [sops](#requirement\_sops) | >= 1.4 |
 
 ## Providers
 
@@ -14,6 +15,7 @@
 |------|---------|
 | <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.74.0 |
 | <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.74.0 |
+| <a name="provider_sops"></a> [sops](#provider\_sops) | 1.4.1 |
 
 ## Modules
 
@@ -23,8 +25,8 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [scaleway_ipam_ip.kubernetes_public_gateway_private_network_ip](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/ipam_ip) | resource |
-| [scaleway_ipam_ip.strongswan_public_gateway_private_network_ip](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/ipam_ip) | resource |
+| [scaleway_ipam_ip.kubernetes_private_network_public_gateway_ip](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/ipam_ip) | resource |
+| [scaleway_ipam_ip.strongswan_private_network_public_gateway_ip](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/ipam_ip) | resource |
 | [scaleway_lb.traefik_lb](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/lb) | resource |
 | [scaleway_lb_ip.traefik_lb_ip](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/lb_ip) | resource |
 | [scaleway_lb_private_network.traefik_lb_private_network](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/lb_private_network) | resource |
@@ -40,6 +42,7 @@ No modules.
 | [scaleway_vpc_route.kubernetes_to_strongswan](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/vpc_route) | resource |
 | [scaleway_vpc_route.strongswan_to_kubernetes](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/vpc_route) | resource |
 | [scaleway_account_project.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
+| [sops_file.secrets](https://registry.terraform.io/providers/carlpett/sops/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 

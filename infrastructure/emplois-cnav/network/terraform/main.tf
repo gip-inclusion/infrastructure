@@ -4,6 +4,10 @@ terraform {
       source  = "scaleway/scaleway"
       version = ">= 2.60.0"
     }
+    sops = {
+      source  = "carlpett/sops"
+      version = ">= 1.4"
+    }
   }
   required_version = ">= 1.10"
 }
@@ -12,18 +16,13 @@ resource "scaleway_vpc" "vpc" {
   name = "emplois-cnav-vpc"
 }
 
-moved {
-  from = scaleway_vpc_private_network.private_network
-  to   = scaleway_vpc_private_network.strongswan_private_network
-}
-
 resource "scaleway_vpc_private_network" "strongswan_private_network" {
   name                             = "emplois-cnav-strongswan-private-network"
   vpc_id                           = scaleway_vpc.vpc.id
   enable_default_route_propagation = true
 
   ipv4_subnet {
-    subnet = "10.251.0.0/20"
+    subnet = local.strongswan_private_network_subnet
   }
 }
 
@@ -33,7 +32,7 @@ resource "scaleway_vpc_private_network" "kubernetes_private_network" {
   enable_default_route_propagation = true
 
   ipv4_subnet {
-    subnet = "10.252.0.0/20"
+    subnet = local.kubernetes_private_network_subnet
   }
 }
 
@@ -49,8 +48,8 @@ resource "scaleway_vpc_public_gateway" "strongswan_public_gateway" {
   bastion_port    = 61000
 }
 
-resource "scaleway_ipam_ip" "strongswan_public_gateway_private_network_ip" {
-  address = "10.251.1.1"
+resource "scaleway_ipam_ip" "strongswan_private_network_public_gateway_ip" {
+  address = local.strongswan_private_network_public_gateway_ip
 
   source {
     private_network_id = scaleway_vpc_private_network.strongswan_private_network.id
@@ -63,7 +62,7 @@ resource "scaleway_vpc_gateway_network" "strongswan_gateway_network" {
 
   ipam_config {
     push_default_route = true
-    ipam_ip_id         = scaleway_ipam_ip.strongswan_public_gateway_private_network_ip.id
+    ipam_ip_id         = scaleway_ipam_ip.strongswan_private_network_public_gateway_ip.id
   }
 }
 
@@ -78,8 +77,8 @@ resource "scaleway_vpc_public_gateway" "kubernetes_public_gateway" {
   ip_id = scaleway_vpc_public_gateway_ip.kubernetes_public_gateway_ip.id
 }
 
-resource "scaleway_ipam_ip" "kubernetes_public_gateway_private_network_ip" {
-  address = "10.252.1.1"
+resource "scaleway_ipam_ip" "kubernetes_private_network_public_gateway_ip" {
+  address = local.kubernetes_private_network_public_gateway_ip
 
   source {
     private_network_id = scaleway_vpc_private_network.kubernetes_private_network.id
@@ -92,7 +91,7 @@ resource "scaleway_vpc_gateway_network" "kubernetes_gateway_network" {
 
   ipam_config {
     push_default_route = true
-    ipam_ip_id         = scaleway_ipam_ip.kubernetes_public_gateway_private_network_ip.id
+    ipam_ip_id         = scaleway_ipam_ip.kubernetes_private_network_public_gateway_ip.id
   }
 }
 
