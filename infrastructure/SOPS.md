@@ -38,7 +38,7 @@ Les deux mécanismes coexistent dans ce repo. Le critère de choix est **qui con
 - Les clés publiques de tous les recipients sont listées dans `.sops.yaml` à la racine du repo
 
 La clé existante `AGE_PRIVATE_KEY` reste **réservée au chiffrement des plans Terraform CI**
-(cf. `.github/workflows/_terraform-module.yml`) : on ne souhaite pas réutiliser (pas la même besoin de rotation
+(cf. `.github/workflows/_terraform-module.yml`) : on ne souhaite pas réutiliser (pas le même besoin de rotation
 ni la même exposition).
 
 ## Setup local pour un nouvel utilisateur
