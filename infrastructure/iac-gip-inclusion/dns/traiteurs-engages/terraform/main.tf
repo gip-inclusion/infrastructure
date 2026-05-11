@@ -19,12 +19,12 @@ module "dns-traiteurs-engages" {
     "staging" = {
       name = "staging.traiteurs-engages"
       data = "traiteurs-engages-staging.osc-fr1.scalingo.io."
-      type = "CNAME"
+      type = "ALIAS"
     },
     "prod" = {
       name = "traiteurs.engages"
       data = "proxy.applicatif.net."
-      type = "CNAME"
+      type = "ALIAS"
     },
 
     # Emails
