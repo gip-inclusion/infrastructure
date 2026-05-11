@@ -28,4 +28,10 @@ resource "scaleway_instance_server" "ogc_instance" {
 resource "scaleway_block_snapshot" "ogc_installed_snapshot" {
   name      = "ogc-installed-snapshot"
   volume_id = scaleway_instance_server.ogc_instance.root_volume[0].volume_id
+
+  # One-shot snapshot taken after Windows + OGC tools installation, kept as a good rollback point.
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes  = [volume_id]
+  }
 }
