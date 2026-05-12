@@ -113,6 +113,42 @@ jobs:
           terraform init -reconfigure -input=false -lockfile=readonly
           terraform validate -no-color
 
+      - name: Run Trivy IaC security scan
+        if: always()
+        uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # v0.30.0
+        with:
+          scan-type: config
+          scan-ref: ${{ env.MODULE_PATH }}
+          format: sarif
+          output: trivy-results.sarif
+          severity: LOW,MEDIUM,HIGH,CRITICAL
+          exit-code: 1
+
+      - name: Upload Trivy SARIF to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@d378195403bf7cd9c9b55e4713ede0962aa58b83
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy
+
+      - name: Run Checkov IaC security scan
+        if: always()
+        uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf # v12.1347.0
+        with:
+          directory: ${{ env.MODULE_PATH }}
+          framework: terraform
+          soft_fail: false
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          skip_check: CKV_GIT_1
+
+      - name: Upload Checkov SARIF to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@d378195403bf7cd9c9b55e4713ede0962aa58b83
+        with:
+          sarif_file: checkov-results.sarif
+          category: checkov
+
       - name: Terraform plan
         if: ${{ success() && !inputs.apply }}
         working-directory: ${{ env.MODULE_PATH }}
