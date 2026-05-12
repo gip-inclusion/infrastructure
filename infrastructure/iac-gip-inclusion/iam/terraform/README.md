@@ -29,6 +29,7 @@ No modules.
 | [scaleway_account_project.iac_gip_inclusion](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 | [scaleway_account_project.site_institutionnel_2025](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 | [scaleway_account_project.terraform](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
+| [scaleway_account_project.traiteurs_engages](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 
 ## Inputs
 
