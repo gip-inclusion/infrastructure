@@ -31,3 +31,8 @@ resource "scaleway_account_project" "site_institutionnel_2025" {
   name        = "site-institutionnel-2025"
   description = var.managed
 }
+
+resource "scaleway_account_project" "traiteurs_engages" {
+  name        = "traiteurs-engages"
+  description = var.managed
+}
