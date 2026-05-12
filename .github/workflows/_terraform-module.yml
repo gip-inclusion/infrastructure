@@ -25,6 +25,7 @@ on:
       SCW_DEFAULT_PROJECT_ID: { required: true }
       SCW_ORGANIZATION_ID: { required: true }
       AGE_PRIVATE_KEY: { required: true }
+      SOPS_AGE_KEY: { required: true }
 
 permissions:
   contents: read
@@ -81,6 +82,31 @@ jobs:
           /usr/local/bin/age --version || true
           echo "::endgroup::"
 
+      - name: Install SOPS
+        shell: bash
+        # Pinned to a specific version + SHA256 to mitigate supply-chain attacks.
+        # Bump manually when needed:
+        # 1. Pick a version from https://github.com/getsops/sops/releases
+        # 2. Grab the linux.amd64 checksum from sops-v<XXX>.checksums.txt for this release
+        # 3. Update SOPS_VERSION and SOPS_SHA256 below
+        env:
+          SOPS_VERSION: "3.13.0"
+          SOPS_SHA256: "f2e5ed5e57376789b0e12793adc848e54c2338906e51392246dd03461b320157"
+        run: |
+          set -euo pipefail
+          echo "::group::Install SOPS v${SOPS_VERSION}"
+
+          url="https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.amd64"
+          tmp="$(mktemp -d)"
+          curl -fsSL -o "$tmp/sops" "$url"
+          echo "${SOPS_SHA256}  $tmp/sops" | sha256sum -c
+
+          sudo install -m 0755 "$tmp/sops" /usr/local/bin/sops
+
+          # Check installation is OK
+          /usr/local/bin/sops --version || true
+          echo "::endgroup::"
+
       - name: Populating env vars
         shell: bash
         run: |
@@ -116,6 +142,8 @@ jobs:
       - name: Terraform plan
         if: ${{ success() && !inputs.apply }}
         working-directory: ${{ env.MODULE_PATH }}
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
         run: |
           set -euo pipefail
           umask 077
