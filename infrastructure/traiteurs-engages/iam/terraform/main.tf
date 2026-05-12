@@ -13,6 +13,14 @@ resource "scaleway_iam_application" "app" {
   description = var.managed
 }
 
+resource "scaleway_iam_api_key" "api_key" {
+  application_id = scaleway_iam_application.app.id
+  description    = var.managed
+  # When authenticating Object Storage operations, SCW uses the default project
+  # linked to the API key.
+  default_project_id = data.scaleway_account_project.traiteurs_engages.project_id
+}
+
 resource "scaleway_iam_policy" "policy" {
   name           = "traiteurs-engages"
   description    = var.managed
@@ -26,4 +34,9 @@ resource "scaleway_iam_policy" "policy" {
       "ObjectStorageObjectsWrite",
     ]
   }
+}
+
+import {
+  to = scaleway_iam_api_key.api_key
+  id = "SCWY29BKPXVB49663RGX"
 }
