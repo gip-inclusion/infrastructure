@@ -13,3 +13,7 @@ data "scaleway_account_project" "emplois_cnav" {
 data "scaleway_account_project" "site_institutionnel_2025" {
   name = "site-institutionnel-2025"
 }
+
+data "scaleway_account_project" "traiteurs_engages" {
+  name = "traiteurs-engages"
+}
