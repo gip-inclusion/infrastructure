@@ -26,7 +26,7 @@ module-name/
 
 Le code source, y compris les commentaires, et les messages de commits doivent être en anglais.
 La documentation ainsi que les titres et les descriptions des pull requests doivent être en français.
-Ces deux derniers éléments font partie des livrables pour le détenteur du marché public et pourront faire l’objet d’un audit par la cour des comptes. 
+Ces deux derniers éléments font partie des livrables pour le détenteur du marché public et pourront faire l’objet d’un audit par la cour des comptes.
 
 #### Ressources Terraform
 
