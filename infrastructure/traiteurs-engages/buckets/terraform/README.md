@@ -27,11 +27,15 @@ No modules.
 | Name | Type |
 |------|------|
 | [scaleway_object_bucket.uploads_bucket](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/object_bucket) | resource |
+| [scaleway_object_bucket.uploads_bucket_production](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/object_bucket) | resource |
 | [scaleway_object_bucket_acl.uploads_bucket_acl](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/object_bucket_acl) | resource |
+| [scaleway_object_bucket_acl.uploads_bucket_production_acl](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/object_bucket_acl) | resource |
 | [scaleway_object_bucket_policy.uploads_bucket_policy](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/object_bucket_policy) | resource |
+| [scaleway_object_bucket_policy.uploads_bucket_production_policy](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/object_bucket_policy) | resource |
 | [scaleway_account_project.traiteurs_engages](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 | [scaleway_iam_application.terraform_ci](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/iam_application) | data source |
 | [scaleway_iam_application.traiteurs_engages](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/iam_application) | data source |
+| [scaleway_iam_application.traiteurs_engages_production](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/iam_application) | data source |
 
 ## Inputs
 
