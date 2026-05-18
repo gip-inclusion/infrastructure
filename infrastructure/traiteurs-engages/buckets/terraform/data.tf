@@ -7,6 +7,10 @@ data "scaleway_iam_application" "traiteurs_engages" {
   name = "traiteurs-engages"
 }
 
+data "scaleway_iam_application" "traiteurs_engages_production" {
+  name = "traiteurs-engages-production"
+}
+
 data "scaleway_iam_application" "terraform_ci" {
   name = "terraform-ci"
 }
