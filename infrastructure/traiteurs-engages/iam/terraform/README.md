@@ -27,7 +27,9 @@ No modules.
 |------|------|
 | [scaleway_iam_api_key.api_key](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_api_key) | resource |
 | [scaleway_iam_application.app](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_application) | resource |
+| [scaleway_iam_application.app_production](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_application) | resource |
 | [scaleway_iam_policy.policy](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_policy) | resource |
+| [scaleway_iam_policy.policy_production](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_policy) | resource |
 | [scaleway_account_project.traiteurs_engages](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 
 ## Inputs
