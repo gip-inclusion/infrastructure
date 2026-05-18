@@ -43,5 +43,20 @@ module "dns-traiteurs-engages" {
       data = "k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDeMVIzrCa3T14JsNY0IRv5/2V1/v2itlviLQBwXsa7shBD6TrBkswsFUToPyMRWC9tbR/5ey0nRBH0ZVxp+lsmTxid2Y2z+FApQ6ra2VsXfbJP3HE6wAO0YTVEJt1TmeczhEd2Jiz/fcabIISgXEdSpTYJhb0ct0VJRxcg4c8c7wIDAQAB"
       type = "TXT"
     },
+    "prod-brevo-code" : {
+      name = "traiteurs-engages"
+      data = "brevo-code:96720ae72c4b9e35f0b138dac0f441c4"
+      type = "TXT"
+    },
+    "prod-spf" : {
+      name = "traiteurs-engages"
+      data = "v=spf1 include:spf.brevo.com -all"
+      type = "TXT"
+    },
+    "prod-dkim" : {
+      name = "mail._domainkey.traiteurs-engages"
+      data = "k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDeMVIzrCa3T14JsNY0IRv5/2V1/v2itlviLQBwXsa7shBD6TrBkswsFUToPyMRWC9tbR/5ey0nRBH0ZVxp+lsmTxid2Y2z+FApQ6ra2VsXfbJP3HE6wAO0YTVEJt1TmeczhEd2Jiz/fcabIISgXEdSpTYJhb0ct0VJRxcg4c8c7wIDAQAB"
+      type = "TXT"
+    },
   }
 }
