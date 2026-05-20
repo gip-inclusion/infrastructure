@@ -82,6 +82,20 @@ resource "scaleway_object_bucket_policy" "uploads_bucket_policy" {
             "${scaleway_object_bucket.uploads_bucket.name}/*",
           ],
         },
+        {
+          Sid    = "Deny the traiteurs-engages production app from accessing the staging bucket",
+          Effect = "Deny",
+          Principal = {
+            SCW = [
+              "application_id:${data.scaleway_iam_application.traiteurs_engages_production.id}",
+            ],
+          },
+          Action = "s3:*",
+          Resource = [
+            "${scaleway_object_bucket.uploads_bucket.name}",
+            "${scaleway_object_bucket.uploads_bucket.name}/*",
+          ],
+        },
       ],
     },
   )
@@ -156,6 +170,20 @@ resource "scaleway_object_bucket_policy" "uploads_bucket_production_policy" {
             "s3:GetObject",
             "s3:PutObject",
           ],
+          Resource = [
+            "${scaleway_object_bucket.uploads_bucket_production.name}",
+            "${scaleway_object_bucket.uploads_bucket_production.name}/*",
+          ],
+        },
+        {
+          Sid    = "Deny the traiteurs-engages staging app from accessing the production bucket",
+          Effect = "Deny",
+          Principal = {
+            SCW = [
+              "application_id:${data.scaleway_iam_application.traiteurs_engages.id}",
+            ],
+          },
+          Action = "s3:*",
           Resource = [
             "${scaleway_object_bucket.uploads_bucket_production.name}",
             "${scaleway_object_bucket.uploads_bucket_production.name}/*",
