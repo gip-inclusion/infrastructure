@@ -161,20 +161,6 @@ resource "scaleway_object_bucket_policy" "uploads_bucket_production_policy" {
             "${scaleway_object_bucket.uploads_bucket_production.name}/*",
           ],
         },
-        {
-          Sid    = "Deny the traiteurs-engages staging app from accessing the production bucket",
-          Effect = "Deny",
-          Principal = {
-            SCW = [
-              "application_id:${data.scaleway_iam_application.traiteurs_engages.id}",
-            ],
-          },
-          Action = "s3:*",
-          Resource = [
-            "${scaleway_object_bucket.uploads_bucket_production.name}",
-            "${scaleway_object_bucket.uploads_bucket_production.name}/*",
-          ],
-        },
       ],
     },
   )
