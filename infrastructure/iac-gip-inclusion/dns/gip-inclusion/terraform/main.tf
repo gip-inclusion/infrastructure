@@ -104,6 +104,11 @@ module "dns-gip-inclusion" {
       data = "external.notion.site."
       type = "CNAME"
     },
+    "staging-connect" = {
+      name = "staging.connect"
+      data = "domain.par.clever-cloud.com."
+      type = "CNAME"
+    },
     "staging-statistiques" = {
       name = "staging.statistiques"
       data = "864ad022-99c1-4de3-bf18-850f2a689e19.svc.edge.scw.cloud."
