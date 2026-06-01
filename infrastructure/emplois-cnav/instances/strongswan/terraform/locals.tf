@@ -14,9 +14,9 @@ locals {
     manage_resolv_conf = true
     resolv_conf = {
       nameservers = [
+        "169.254.169.254", # Scaleway DNS
         "1.1.1.1",         # CF DNS
         "1.0.0.1",         # CF DNS
-        "169.254.169.254", # Scaleway private DNS
       ]
     }
     # Note: no `packages` directive. cloud-init's apt-configure runs in the cloud-config phase and overwrites
@@ -65,7 +65,7 @@ locals {
       {
         path = "/etc/systemd/system/strongswan-extra-ips.service"
         content = base64encode(
-          templatefile("${path.module}/templates/strongswan-extra-ips.service.tpl", {})
+          file("${path.module}/templates/strongswan-extra-ips.service")
         )
         encoding = "b64"
       },
@@ -103,7 +103,7 @@ locals {
       # Kernel: enable IP forwarding (needed for routing between pods and VPN)
       # =============================================================================
       "sysctl -w net.ipv4.ip_forward=1",
-      "echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf",
+      "echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/01-ip_forwarding.conf",
 
       # =============================================================================
       # APT: replace cloud-init's default mirrorlist (single Fastly URL, blocked by the security group)
@@ -152,10 +152,13 @@ locals {
       # =============================================================================
       # System updates, DNS and VPC traffic
       "iptables -A OUTPUT -p udp --dport 53 -d 1.1.1.1 -j ACCEPT",              # Cloudflare DNS
+      "iptables -A OUTPUT -p tcp --dport 53 -d 1.1.1.1 -j ACCEPT",              # Cloudflare DNS (TCP fallback)
       "iptables -A OUTPUT -p udp --dport 53 -d 1.0.0.1 -j ACCEPT",              # Cloudflare DNS (secondary)
+      "iptables -A OUTPUT -p tcp --dport 53 -d 1.0.0.1 -j ACCEPT",              # Cloudflare DNS (secondary, TCP)
       "iptables -A OUTPUT -p tcp --dport 80 -d 169.254.42.42 -j ACCEPT",        # Scaleway Metadata API
       "iptables -A OUTPUT -p udp --dport 67 -d 169.254.169.254 -j ACCEPT",      # Scaleway VPC DHCP
       "iptables -A OUTPUT -p udp --dport 53 -d 169.254.169.254 -j ACCEPT",      # Scaleway VPC DNS
+      "iptables -A OUTPUT -p tcp --dport 53 -d 169.254.169.254 -j ACCEPT",      # Scaleway VPC DNS (TCP fallback)
       "iptables -A OUTPUT -p udp --dport 123 -d 169.254.169.254 -j ACCEPT",     # Scaleway VPC NTP
       "iptables -A OUTPUT -p tcp --dport 443 -d 213.32.5.7/32       -j ACCEPT", # debian.mirrors.ovh.net
       "iptables -A OUTPUT -p tcp --dport 443 -d 80.67.163.159/32    -j ACCEPT", # mirror.gitoyen.net
@@ -198,13 +201,13 @@ locals {
       "iptables -t nat -A POSTROUTING -m conntrack --ctorigdst ${local.vpn_config.local_ip_production}  -j SNAT --to-source ${local.vpn_config.local_ip_production}",
 
       # =============================================================================
-      # Firewall: log and drop
-      # Rate-limited LOG before DROP for observability without flooding journals
+      # Firewall: log and reject
+      # Rate-limited LOG before REJECT for observability without flooding journals
       # =============================================================================
-      "iptables -A INPUT  -m limit --limit 10/min -j LOG --log-prefix 'DROP-IN: '  --log-level 4",
-      "iptables -A OUTPUT -m limit --limit 10/min -j LOG --log-prefix 'DROP-OUT: ' --log-level 4",
-      "iptables -A INPUT  -j DROP",
-      "iptables -A OUTPUT -j DROP",
+      "iptables -A INPUT  -m limit --limit 10/min -j LOG --log-prefix 'REJECT-IN: '  --log-level 4",
+      "iptables -A OUTPUT -m limit --limit 10/min -j LOG --log-prefix 'REJECT-OUT: ' --log-level 4",
+      "iptables -A INPUT  -j REJECT",
+      "iptables -A OUTPUT -j REJECT",
 
       # =============================================================================
       # Persist iptables rules
