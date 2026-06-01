@@ -19,6 +19,21 @@ resource "scaleway_instance_security_group" "strongswan_security_group" {
   inbound_default_policy  = "drop"
   outbound_default_policy = "drop"
 
+  # Scaleway DNS (public + VPC resources resolution)
+  outbound_rule {
+    action   = "accept"
+    port     = 53
+    protocol = "UDP"
+    ip_range = "169.254.169.254/32"
+  }
+
+  outbound_rule {
+    action   = "accept"
+    port     = 53
+    protocol = "TCP"
+    ip_range = "169.254.169.254/32"
+  }
+
   # Cloudflare DNS
   outbound_rule {
     action   = "accept"
@@ -30,16 +45,22 @@ resource "scaleway_instance_security_group" "strongswan_security_group" {
   outbound_rule {
     action   = "accept"
     port     = 53
-    protocol = "UDP"
-    ip_range = "1.0.0.1/32"
+    protocol = "TCP"
+    ip_range = "1.1.1.1/32"
   }
 
-  # Scaleway private DNS (VPC resource resolution)
   outbound_rule {
     action   = "accept"
     port     = 53
     protocol = "UDP"
-    ip_range = "169.254.169.254/32"
+    ip_range = "1.0.0.1/32"
+  }
+
+  outbound_rule {
+    action   = "accept"
+    port     = 53
+    protocol = "TCP"
+    ip_range = "1.0.0.1/32"
   }
 
   # Debian repos via fixed-IP mirrors (overrides Fastly used by default).
