@@ -2,7 +2,7 @@
 
 Permet d'utiliser l'outil de configuration des conventions InterOPS (applicatif Java qui ne tourne que sous Windows).
 
-Cette instance n'a pas vocation à tourner en permanence, mais uniquement quelques heures le temps de d'éditer la convention technique InterOPS.
+Cette instance n'a pas vocation à tourner en permanence, mais uniquement quelques heures le temps d'éditer la convention technique InterOPS.
 
 ### Connexion à l'instance
 
