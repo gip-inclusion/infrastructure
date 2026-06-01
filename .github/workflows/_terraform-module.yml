@@ -89,7 +89,7 @@ jobs:
           sudo install -m 0755 "$tmp/sops" /usr/local/bin/sops
 
           # Check installation is OK
-          /usr/local/bin/sops --version || true
+          /usr/local/bin/sops --version
           echo "::endgroup::"
 
       - name: Populating env vars
