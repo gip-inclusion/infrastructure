@@ -22,6 +22,12 @@ module "dns-email" {
       data = "brevo-code:2d8d9f5f1d2fb27858f79eacaf64817d"
       type = "TXT"
     },
+    "dkim-lasuite" = {
+      name = "dimail._domainkey"
+      data = "v=DKIM1; h=sha256; k=rsa; p=MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2WZZhjIMYOZTCwH6ZX8ZhzA5BeytSp1//0bJdIUFCLAtvE7ycaoxL7pvLMoTpKW0mhl/8vY31QatR3PVD5UZwxW+q3fWA4n/pCXDIzfp2xdXCPK/FOWhsYOMCasHBdiAN2dd4On/OMDIndvYd6PBRHuaDpb8dNq++uTdbX7fYWVV/7Gy1BCW7ubAspZp/QtgGOQoZHxoM6q+pRKC+1aD6lsGDBsh/FgwRpacC4Pjj6xqbhnrYJdR5mraQHmFxkyjP/6Wmcv7Hu5+oZoCD6NG9w2o7xuS/QjsHVLyjb81zSiRKAjpeIX/QlJmojvJ2vt7eg9Q7zK/Yamq7y9vOoH/LRFZnpiPgQTtP5RD0o79YwYX4D5UhzVgRTgVdIRNIuiuNVPG7pHDeCxEu9IsNA/g55FgcM9WPRHa29tazq242v8768DUsoorD5vBQPSMKSNeTLJ57UjnnhtW5037zL2P+7tSa5ZUXMCiU8R0tsmZT/y7RwON3OVsO1YJfYhOPtlMqXpj0FA4BLJP+nVS7Xu50r0yXfpqun+7OGAMbaEBHfRCP9ct94jRyKVauc1FCFykivXHhvnvkq4qHwlnqL4L1rLxGBCZFbVecMaJ/lqBPuTlO/ewatXsmHN3Q53xbpYbWY3bQNnH3mq1+RAdLELFShiZg/YTHE75LkIMGERs2nMCAwEAAQ=="
+      type = "TXT"
+      ttl  = 10800
+    },
     "dmarc" = {
       name = "_dmarc"
       data = "v=DMARC1; p=quarantine; rua=mailto:98224b9a@in.mailhardener.com,mailto:dmarc@inclusion.gouv.fr,mailto:rua@dmarc.brevo.com!10m; fo=1"
@@ -38,30 +44,40 @@ module "dns-email" {
       data     = "alt1.aspmx.l.google.com."
       type     = "MX"
       priority = 5
+      ttl      = 1800
     },
     "google-mx-alt2" = {
       name     = ""
       data     = "alt2.aspmx.l.google.com."
       type     = "MX"
       priority = 5
+      ttl      = 1800
     },
     "google-mx-alt3" = {
       name     = ""
       data     = "alt3.aspmx.l.google.com."
       type     = "MX"
       priority = 10
+      ttl      = 1800
     },
     "google-mx-alt4" = {
       name     = ""
       data     = "alt4.aspmx.l.google.com."
       type     = "MX"
       priority = 10
+      ttl      = 1800
     },
     "google-mx-main" = {
       name     = ""
       data     = "aspmx.l.google.com."
       type     = "MX"
       priority = 1
+      ttl      = 1800
+    },
+    "imap" = {
+      name = "imap"
+      data = "imap.ox.numerique.gouv.fr."
+      type = "CNAME"
     },
     "mail-dkim" = {
       name = "mail._domainkey"
@@ -80,6 +96,11 @@ module "dns-email" {
       type = "TXT"
       ttl  = 10800
     },
+    "smtp" = {
+      name = "smtp"
+      data = "smtp.ox.numerique.gouv.fr."
+      type = "CNAME"
+    },
     "smtp.tls" = {
       name = "_smtp._tls"
       data = "v=TLSRPTv1; rua=mailto:98224b9a@in.mailhardener.com"
@@ -87,8 +108,13 @@ module "dns-email" {
     },
     "spf" = {
       name = ""
-      data = "v=spf1 include:bnc3.mailjet.com include:spf.brevo.com include:_spf.google.com include:mail.zendesk.com ~all"
+      data = "v=spf1 include:bnc3.mailjet.com include:spf.brevo.com include:_spf.google.com include:mail.zendesk.com include:_spf.ox.numerique.gouv.fr ~all"
       type = "TXT"
+    },
+    "webmail" = {
+      name = "webmail"
+      data = "webmail.ox.numerique.gouv.fr."
+      type = "CNAME"
     },
   }
 }
