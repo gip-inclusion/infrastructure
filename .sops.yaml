@@ -5,8 +5,8 @@
 # on every encrypted file.
 
 keys:
-  - &ci  age1q9qyhryg9zmwywfy92468knc2n5zr2j66e73kw5mzc28fs6m5u4qpazpma
-  - &leo age1q2w07qws7tw5fhcsnxr33z6588exfnu2dpnsqhhqlvyxc0jf750qgrwv5t
+  - &ci        age1q9qyhryg9zmwywfy92468knc2n5zr2j66e73kw5mzc28fs6m5u4qpazpma
+  - &leo-naeka age1q2w07qws7tw5fhcsnxr33z6588exfnu2dpnsqhhqlvyxc0jf750qgrwv5t
 
 creation_rules:
   # Default rule: every user + CI can decrypt.
@@ -15,4 +15,4 @@ creation_rules:
     key_groups:
       - age:
           - *ci
-          - *leo
+          - *leo-naeka

@@ -25,4 +25,4 @@ for file in "$@"; do
     fi
 done
 
-exit "$return_code"
+exit $return_code
