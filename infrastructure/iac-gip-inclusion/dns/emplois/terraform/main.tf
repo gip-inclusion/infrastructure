@@ -21,6 +21,21 @@ module "dns-emplois" {
       data = "brevo-code:7a18495fb1b2ffa39ca7ad0c1e70adcb"
       type = "TXT"
     },
+    "plateforme" = {
+      name = "plateforme"
+      data = "domain.par.clever-cloud.com."
+      type = "ALIAS"
+    }
+    "plateforme-demo" = {
+      name = "demo.plateforme"
+      data = "domain.par.clever-cloud.com."
+      type = "ALIAS"
+    }
+    "plateforme-pentest" = {
+      name = "pentest.plateforme"
+      data = "domain.par.clever-cloud.com."
+      type = "ALIAS"
+    }
     "website" = {
       name = "emplois"
       data = "domain.par.clever-cloud.com."
