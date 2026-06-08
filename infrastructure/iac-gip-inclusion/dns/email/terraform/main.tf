@@ -33,47 +33,6 @@ module "dns-email" {
       data = "v=DMARC1; p=quarantine; rua=mailto:98224b9a@in.mailhardener.com,mailto:dmarc@inclusion.gouv.fr,mailto:rua@dmarc.brevo.com!10m; fo=1"
       type = "TXT"
     },
-    "google-dkim" = {
-      name = "google._domainkey"
-      data = "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtYhB99qk0vLYpSd+nHCkR0TLE1K2v2OdQQb6NUso2aAhUiimuOOQ06EDapnhK4IGSEXISTW3fTXBECEGmeyQ6mZKsElS24k/O+0Q33ANvBCJf+4bkm7A7/ITj2rsbRZYRJXpjdrfD/wvc+FUf6h9gIE9/h1PNeA0vaTSBJnsqNX7bszw9W+8WMzf/vLm6Wii+76GhCZvVtN8s/4EZz5hW+TcbsHAouTcOuuUxx+wfkgEkkycBHuYjw9vszyNt/PBMxmKQXnrx8QxODZ03sc/CnQBDwc/JT7heWiFqbVSdN8VE0y42CFFuDa+JBNXFGv/qzLfePISppswEwn9AixlPwIDAQAB"
-      type = "TXT"
-      ttl  = 300
-    },
-    "google-mx-alt1" = {
-      name     = ""
-      data     = "alt1.aspmx.l.google.com."
-      type     = "MX"
-      priority = 5
-      ttl      = 300
-    },
-    "google-mx-alt2" = {
-      name     = ""
-      data     = "alt2.aspmx.l.google.com."
-      type     = "MX"
-      priority = 5
-      ttl      = 300
-    },
-    "google-mx-alt3" = {
-      name     = ""
-      data     = "alt3.aspmx.l.google.com."
-      type     = "MX"
-      priority = 10
-      ttl      = 300
-    },
-    "google-mx-alt4" = {
-      name     = ""
-      data     = "alt4.aspmx.l.google.com."
-      type     = "MX"
-      priority = 10
-      ttl      = 300
-    },
-    "google-mx-main" = {
-      name     = ""
-      data     = "aspmx.l.google.com."
-      type     = "MX"
-      priority = 1
-      ttl      = 300
-    },
     "imap" = {
       name = "imap"
       data = "imap.ox.numerique.gouv.fr."
@@ -96,6 +55,13 @@ module "dns-email" {
       type = "TXT"
       ttl  = 10800
     },
+    "mx" = {
+      name     = ""
+      data     = "mx.ox.numerique.gouv.fr."
+      type     = "MX"
+      priority = 1
+      ttl      = 300
+    },
     "smtp" = {
       name = "smtp"
       data = "smtp.ox.numerique.gouv.fr."
@@ -108,7 +74,7 @@ module "dns-email" {
     },
     "spf" = {
       name = ""
-      data = "v=spf1 include:bnc3.mailjet.com include:spf.brevo.com include:_spf.google.com include:mail.zendesk.com include:_spf.ox.numerique.gouv.fr ~all"
+      data = "v=spf1 include:bnc3.mailjet.com include:spf.brevo.com include:mail.zendesk.com include:_spf.ox.numerique.gouv.fr ~all"
       type = "TXT"
     },
     "webmail" = {
