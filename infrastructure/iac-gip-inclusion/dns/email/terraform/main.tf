@@ -44,35 +44,35 @@ module "dns-email" {
       data     = "alt1.aspmx.l.google.com."
       type     = "MX"
       priority = 5
-      ttl      = 1800
+      ttl      = 300
     },
     "google-mx-alt2" = {
       name     = ""
       data     = "alt2.aspmx.l.google.com."
       type     = "MX"
       priority = 5
-      ttl      = 1800
+      ttl      = 300
     },
     "google-mx-alt3" = {
       name     = ""
       data     = "alt3.aspmx.l.google.com."
       type     = "MX"
       priority = 10
-      ttl      = 1800
+      ttl      = 300
     },
     "google-mx-alt4" = {
       name     = ""
       data     = "alt4.aspmx.l.google.com."
       type     = "MX"
       priority = 10
-      ttl      = 1800
+      ttl      = 300
     },
     "google-mx-main" = {
       name     = ""
       data     = "aspmx.l.google.com."
       type     = "MX"
       priority = 1
-      ttl      = 1800
+      ttl      = 300
     },
     "imap" = {
       name = "imap"
