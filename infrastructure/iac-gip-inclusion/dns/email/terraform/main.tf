@@ -60,7 +60,7 @@ module "dns-email" {
       data     = "mx.ox.numerique.gouv.fr."
       type     = "MX"
       priority = 1
-      ttl      = 300
+      ttl      = 600
     },
     "smtp" = {
       name = "smtp"
