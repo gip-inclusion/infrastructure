@@ -15,7 +15,7 @@ se connecter au bucket du projet.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.74.0 |
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.76.0 |
 
 ## Modules
 
