@@ -51,7 +51,7 @@ module "dns-email" {
     },
     "mta-sts-txt" = {
       name = "_mta-sts"
-      data = "v=STSv1; id=20260608T120200"
+      data = "v=STSv1; id=20260611T120200"
       type = "TXT"
       ttl  = 10800
     },
