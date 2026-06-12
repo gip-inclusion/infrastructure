@@ -62,8 +62,11 @@ chmod 600 ~/.config/sops/age/keys.txt
 printf '%s\n' "$key" | grep "public key:"
 ```
 
-**⚠️ MacOS** : SOPS suit XDG, qui sur macOS pointe par défaut vers `~/Library/Application Support/sops/age/keys.txt`
-(et non `~/.config/`). Pour garder un chemin uniforme entre OS, suivre XDG et exporter dans son shell rc :
+**⚠️ macOS** : sous Linux, SOPS cherche la clé dans `~/.config/sops/age/keys.txt` alors que sous macOS (qui ne
+provisionne aucune variable XDG) il se rabat sur le dossier de config natif
+`~/Library/Application Support/sops/age/keys.txt`.  
+Pour que les chemins de ce document soient valables sur tous les OS, on aligne macOS sur le chemin Linux en exportant
+dans son shell rc :
 
 ```bash
 export SOPS_AGE_KEY_FILE=$HOME/.config/sops/age/keys.txt
