@@ -4,8 +4,34 @@ terraform {
       source  = "scaleway/scaleway"
       version = ">= 2.60.0"
     }
+    sops = {
+      source  = "carlpett/sops"
+      version = ">= 1.4"
+    }
   }
   required_version = ">= 1.10"
+}
+
+# Group of users allowed to access the Kubernetes cluster.
+# Members are resolved from emails listed in the SOPS-encrypted secrets, iterated with count instead of
+# for_each: Terraform forbids for_each on sensitive collections, as instance keys would leak the emails
+# in plans and CI logs of this public repository.
+resource "scaleway_iam_group" "kubernetes_users" {
+  name            = "emplois-cnav-kubernetes-users"
+  description     = var.managed
+  organization_id = data.scaleway_account_project.emplois_cnav.organization_id
+  user_ids        = data.scaleway_iam_user.kubernetes_users[*].id
+}
+
+# Policy for retrieving the kubeconfig and reading cluster resources.
+resource "scaleway_iam_policy" "kubernetes_users" {
+  name        = "emplois-cnav-kubernetes-users"
+  description = var.managed
+  group_id    = scaleway_iam_group.kubernetes_users.id
+  rule {
+    permission_set_names = ["KubernetesReadOnly"]
+    project_ids          = [data.scaleway_account_project.emplois_cnav.id]
+  }
 }
 
 resource "scaleway_iam_ssh_key" "leo" {
