@@ -46,6 +46,11 @@ module "dns-emplois-cnav" {
       type = "A"
       ttl  = 300
     },
+    "letsencrypt-caa-interops-a" = {
+      name = "interops-a"
+      data = "0 issue \"letsencrypt.org\""
+      type = "CAA"
+    },
     "certigna-caa-cnav-emplois" = {
       name = "cnav.emplois"
       data = "0 issue \"certigna.fr\""
@@ -54,6 +59,21 @@ module "dns-emplois-cnav" {
     "certigna-caa-interops-a" = {
       name = "interops-a"
       data = "0 issue \"certigna.fr\""
+      type = "CAA"
+    },
+    "certigna-caa-ws-ident" = {
+      name = "ws-ident.interops-a",
+      data = "0 issue \"certigna.fr\"",
+      type = "CAA"
+    },
+    "certigna-caa-ws-ident-integration" = {
+      name = "ws-ident.integration.interops-a",
+      data = "0 issue \"certigna.fr\"",
+      type = "CAA"
+    },
+    "certigna-caa-ws-ident-production" = {
+      name = "ws-ident.production.interops-a",
+      data = "0 issue \"certigna.fr\"",
       type = "CAA"
     },
     "certigna-claim-1" = {
