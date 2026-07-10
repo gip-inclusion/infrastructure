@@ -16,6 +16,11 @@ module "dns-gip-inclusion" {
   scw_project_id = data.scaleway_account_project.iac_gip_inclusion.project_id
 
   records = {
+    "attio-domain-verification" = {
+      name = ""
+      data = "attio-domain-verification=E0JJRAACK295CWRVJG71W300"
+      type = "TXT"
+    },
     "autometa" = {
       name = "autometa"
       data = "matometa.osc-fr1.scalingo.io."
