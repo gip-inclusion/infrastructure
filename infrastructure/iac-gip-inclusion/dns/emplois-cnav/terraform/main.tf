@@ -40,6 +40,18 @@ module "dns-emplois-cnav" {
       type = "A"
       ttl  = 300
     },
+    "backoffice-relay-integration" = {
+      name = "backoffice.relay.integration.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
+    },
+    "backoffice-relay-production" = {
+      name = "backoffice.relay.production.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
+    },
     "auth" = {
       name = "auth.interops-a"
       data = data.scaleway_lb.traefik_lb.ip_address
