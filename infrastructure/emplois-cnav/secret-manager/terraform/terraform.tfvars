@@ -12,3 +12,8 @@ database_credentials_versions = {
   integration = 1
   production  = 1
 }
+
+api_token_versions = {
+  integration = 1
+  production  = 1
+}
