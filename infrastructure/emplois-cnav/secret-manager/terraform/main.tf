@@ -137,3 +137,35 @@ resource "scaleway_secret" "api_relay_cnav_database_connection" {
   description = var.managed
   type        = "key_value"
 }
+
+# API bearer token of the api-relay-cnav application, one per environment.
+# The payload include the plaintext `token` and its `hashed_token` (sha512).
+# The pod only receives the hash (DJANGO_HASHED_API_TOKEN)
+ephemeral "random_password" "api_relay_cnav_api_token" {
+  for_each = var.api_relay_environments
+
+  # Alphanumeric to stay header/URL-safe
+  length  = 48
+  special = false
+}
+
+resource "scaleway_secret" "api_relay_cnav_api_token" {
+  for_each = var.api_relay_environments
+
+  name        = "api-relay-api-token-${each.key}"
+  protected   = true
+  description = var.managed
+  type        = "key_value"
+}
+
+resource "scaleway_secret_version" "api_relay_cnav_api_token" {
+  for_each = var.api_relay_environments
+
+  secret_id = scaleway_secret.api_relay_cnav_api_token[each.key].id
+  data_wo = jsonencode({
+    token = ephemeral.random_password.api_relay_cnav_api_token[each.key].result
+    # sha512() returns the lowercase hex digest, matching Django's token_hexdigest
+    hashed_token = sha512(ephemeral.random_password.api_relay_cnav_api_token[each.key].result)
+  })
+  data_wo_version = var.api_token_versions[each.key]
+}

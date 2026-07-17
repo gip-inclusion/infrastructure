@@ -38,3 +38,13 @@ variable "database_credentials_versions" {
     error_message = "Each environment in api_relay_environments must have an entry in database_credentials_versions."
   }
 }
+
+variable "api_token_versions" {
+  type        = map(number)
+  description = "Per-environment API bearer token version: bump it to rotate the token (invalidates the previous token for API consumers)"
+
+  validation {
+    condition     = alltrue([for env in var.api_relay_environments : contains(keys(var.api_token_versions), env)])
+    error_message = "Each environment in api_relay_environments must have an entry in api_token_versions."
+  }
+}
