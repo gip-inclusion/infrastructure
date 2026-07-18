@@ -29,8 +29,11 @@ resource "scaleway_iam_policy" "kubernetes_users" {
   description = var.managed
   group_id    = scaleway_iam_group.kubernetes_users.id
   rule {
-    permission_set_names = ["KubernetesReadOnly"]
-    project_ids          = [data.scaleway_account_project.emplois_cnav.id]
+    permission_set_names = [
+      "KubernetesFullAccess",
+      "KubernetesSystemMastersGroupAccess",
+    ]
+    project_ids = [data.scaleway_account_project.emplois_cnav.id]
   }
 }
 
