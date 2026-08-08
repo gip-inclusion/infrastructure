@@ -29,3 +29,8 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+.osk
+.claude
+security-scan-results/
+.venv
