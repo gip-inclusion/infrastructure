@@ -16,6 +16,12 @@ module "dns-gip-inclusion" {
   scw_project_id = data.scaleway_account_project.iac_gip_inclusion.project_id
 
   records = {
+    "accueil-plateforme" = {
+      name = "accueil.plateforme"
+      data = "novarw2u9ckv-plateforme-accueil.functions.fnc.fr-par.scw.cloud."
+      type = "CNAME"
+      ttl  = 10800
+    },
     "attio-domain-verification" = {
       name = ""
       data = "attio-domain-verification=E0JJRAACK295CWRVJG71W300"
