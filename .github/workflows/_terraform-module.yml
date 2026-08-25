@@ -57,6 +57,14 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: "1.16.0"
+
+      # If this step fails, you must bump Terraform version above.
+      - name: Check that we have the latest version of Terraform
+        # Run on pull request (not on main) to avoid blocking merges.
+        if: ${{ github.event_name == 'pull_request' }}
+        run: terraform version -json | jq 'if .terraform_outdated then halt_error(1) else halt end'
 
       - name: Install AGE
         shell: bash
