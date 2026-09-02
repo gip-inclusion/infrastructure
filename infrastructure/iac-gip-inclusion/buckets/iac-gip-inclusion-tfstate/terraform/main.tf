@@ -79,6 +79,7 @@ resource "scaleway_object_bucket_policy" "state_bucket_policy" {
             "s3:GetBucketWebsite",
             "s3:GetLifecycleConfiguration",
             "s3:ListBucket",
+            "s3:ListBucketVersions",
           ]
           Resource = [
             scaleway_object_bucket.gip_inclusion_terraform_state.name,
