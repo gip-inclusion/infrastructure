@@ -65,6 +65,7 @@ resource "scaleway_object_bucket_policy" "state_bucket_policy" {
           Effect = "Allow",
           Principal = {
             SCW = [
+              "user_id:0dc15a0f-cd88-4b91-ae03-edb8d6b98ee0",
               "user_id:c10ec0b8-a110-4d2e-85a2-f896ce77dfd1",
             ]
           },
@@ -88,6 +89,7 @@ resource "scaleway_object_bucket_policy" "state_bucket_policy" {
           Effect = "Allow",
           Principal = {
             SCW = [
+              "user_id:0dc15a0f-cd88-4b91-ae03-edb8d6b98ee0",
               "user_id:c10ec0b8-a110-4d2e-85a2-f896ce77dfd1",
             ]
           },
