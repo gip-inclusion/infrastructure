@@ -16,7 +16,7 @@ Les records étaient initialement définis dans le module `dns/gip-inclusion`, i
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.76.0 |
+| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.77.0 |
 
 ## Modules
 
