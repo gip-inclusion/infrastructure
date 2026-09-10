@@ -175,7 +175,7 @@ resource "scaleway_instance_security_group" "strongswan_security_group" {
 resource "scaleway_instance_server" "strongswan_instance" {
   name              = "strongswan-vpn"
   type              = "DEV1-S"
-  image             = "debian_bookworm"
+  image             = "debian_trixie"
   security_group_id = scaleway_instance_security_group.strongswan_security_group.id
 
   root_volume {

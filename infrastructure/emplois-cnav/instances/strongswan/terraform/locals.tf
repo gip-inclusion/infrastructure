@@ -23,23 +23,13 @@ locals {
     # our mirrorlist with the default Fastly URI from /etc/cloud/cloud.cfg.d/, which our security group blocks.
     # Package install is performed in runcmd, after the mirrorlists have been rewritten to set the 3 whitelisted ones.
     write_files = [
-      # Strongswan IPsec connection config: peer IDs, tunnel parameters, traffic selectors.
-      {
-        path = "/etc/ipsec.conf"
-        content = base64encode(
-          templatefile("${path.module}/templates/ipsec.conf.tpl", {
-            public_gateway_ip = data.scaleway_vpc_public_gateway_ip.strongswan_public_gateway_ip
-            vpn_config        = local.vpn_config
-          })
-        )
-        encoding = "b64"
-      },
-      # Strongswan PSK file. The PSK is left as a placeholder and must be set manually on the VM post-deploy
+      # Strongswan IPsec connection config: peer IDs, tunnel parameters, traffic selectors and PSK.
+      # The PSK is left as a placeholder and must be set manually on the VM post-deploy
       # (this keeps the secret out of Terraform state).
       {
-        path = "/etc/ipsec.secrets"
+        path = "/etc/swanctl/swanctl.conf"
         content = base64encode(
-          templatefile("${path.module}/templates/ipsec.secrets.tpl", {
+          templatefile("${path.module}/templates/swanctl.conf.tpl", {
             public_gateway_ip = data.scaleway_vpc_public_gateway_ip.strongswan_public_gateway_ip
             vpn_config        = local.vpn_config
           })
