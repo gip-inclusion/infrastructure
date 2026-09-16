@@ -40,10 +40,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_api_relay_api_token_versions"></a> [api\_relay\_api\_token\_versions](#input\_api\_relay\_api\_token\_versions) | Per-environment API bearer token version: bump it to rotate the token (invalidates the previous token for API consumers) | `map(number)` | n/a | yes |
+| <a name="input_api_relay_database_credentials_versions"></a> [api\_relay\_database\_credentials\_versions](#input\_api\_relay\_database\_credentials\_versions) | Per-environment database credentials version: bump it to rotate the passwords, then apply emplois-cnav/database to propagate them to the RDB users | `map(number)` | n/a | yes |
+| <a name="input_api_relay_django_secret_key_versions"></a> [api\_relay\_django\_secret\_key\_versions](#input\_api\_relay\_django\_secret\_key\_versions) | Per-environment Django SECRET\_KEY version: bump it to rotate the key | `map(number)` | n/a | yes |
 | <a name="input_api_relay_environments"></a> [api\_relay\_environments](#input\_api\_relay\_environments) | Environments getting the api-relay application secrets | `set(string)` | n/a | yes |
-| <a name="input_api_token_versions"></a> [api\_token\_versions](#input\_api\_token\_versions) | Per-environment API bearer token version: bump it to rotate the token (invalidates the previous token for API consumers) | `map(number)` | n/a | yes |
-| <a name="input_database_credentials_versions"></a> [database\_credentials\_versions](#input\_database\_credentials\_versions) | Per-environment database credentials version: bump it to rotate the passwords, then apply emplois-cnav/database to propagate them to the RDB users | `map(number)` | n/a | yes |
-| <a name="input_django_secret_key_versions"></a> [django\_secret\_key\_versions](#input\_django\_secret\_key\_versions) | Per-environment Django SECRET\_KEY version: bump it to rotate the key | `map(number)` | n/a | yes |
 | <a name="input_managed"></a> [managed](#input\_managed) | Indicates the resource is managed by Terraform | `string` | `"Managed by Terraform"` | no |
 | <a name="input_scw_region"></a> [scw\_region](#input\_scw\_region) | Scaleway region for resources | `string` | n/a | yes |
 | <a name="input_scw_zone"></a> [scw\_zone](#input\_scw\_zone) | Scaleway zone for resources | `string` | n/a | yes |
