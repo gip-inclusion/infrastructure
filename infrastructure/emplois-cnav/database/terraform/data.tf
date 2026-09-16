@@ -18,3 +18,11 @@ data "scaleway_secret" "api_relay_cnav_database_connection" {
 
   name = "api-relay-database-connection-${each.key}"
 }
+
+data "scaleway_secret" "authentik_database" {
+  name = "authentik-database"
+}
+
+data "scaleway_secret" "authentik_database_connection" {
+  name = "authentik-database-connection"
+}
