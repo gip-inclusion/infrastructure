@@ -109,7 +109,7 @@ resource "scaleway_rdb_privilege" "api_relay_cnav_app" {
   permission    = "readwrite"
 }
 
-# Connection endpoint handed to the cluster through Secret Manager (shell declared in secret-manager)
+# Connection endpoint handed to the cluster through Secret Manager (secret declared in secret-manager module)
 # The External Secrets Operator syncs it into the interops-* namespaces
 # Not sensitive (private IP), hence a regular version: any content change
 # (ex: new endpoint after an instance re-creation) pushes a new version on apply
@@ -121,5 +121,44 @@ resource "scaleway_secret_version" "api_relay_cnav_database_connection" {
     host = scaleway_rdb_instance.postgresql.private_network[0].ip
     port = tostring(scaleway_rdb_instance.postgresql.private_network[0].port)
     name = scaleway_rdb_database.api_relay_cnav[each.key].name
+  })
+}
+
+# Authentik database.
+resource "scaleway_rdb_database" "authentik" {
+  instance_id = scaleway_rdb_instance.postgresql.id
+  name        = "authentik"
+}
+
+ephemeral "scaleway_secret_version" "authentik_database" {
+  secret_id = data.scaleway_secret.authentik_database.id
+  revision  = "latest_enabled"
+}
+
+resource "scaleway_rdb_user" "authentik" {
+  instance_id         = scaleway_rdb_instance.postgresql.id
+  name                = "authentik"
+  password_wo         = jsondecode(base64decode(ephemeral.scaleway_secret_version.authentik_database.data)).password
+  password_wo_version = data.scaleway_secret.authentik_database.version_count
+  is_admin            = false
+}
+
+resource "scaleway_rdb_privilege" "authentik" {
+  instance_id   = scaleway_rdb_instance.postgresql.id
+  user_name     = scaleway_rdb_user.authentik.name
+  database_name = scaleway_rdb_database.authentik.name
+  permission    = "all"
+}
+
+# Connection endpoint handed to the cluster through Secret Manager (secret declared in secret-manager module)
+# The External Secrets Operator syncs it into the authentik namespace
+# Not sensitive (private IP), hence a regular version: any content change
+# (ex: new endpoint after an instance re-creation) pushes a new version on apply
+resource "scaleway_secret_version" "authentik_database_connection" {
+  secret_id = data.scaleway_secret.authentik_database_connection.id
+  data = jsonencode({
+    host = scaleway_rdb_instance.postgresql.private_network[0].ip
+    port = tostring(scaleway_rdb_instance.postgresql.private_network[0].port)
+    name = scaleway_rdb_database.authentik.name
   })
 }
