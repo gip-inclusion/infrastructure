@@ -94,15 +94,21 @@ No modules.
 | Name | Type |
 |------|------|
 | [scaleway_rdb_database.api_relay_cnav](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_database) | resource |
+| [scaleway_rdb_database.authentik](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_database) | resource |
 | [scaleway_rdb_instance.postgresql](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_instance) | resource |
 | [scaleway_rdb_privilege.api_relay_cnav_app](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_privilege) | resource |
 | [scaleway_rdb_privilege.api_relay_cnav_jobs](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_privilege) | resource |
+| [scaleway_rdb_privilege.authentik](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_privilege) | resource |
 | [scaleway_rdb_user.api_relay_cnav_app](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_user) | resource |
 | [scaleway_rdb_user.api_relay_cnav_jobs](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_user) | resource |
+| [scaleway_rdb_user.authentik](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_user) | resource |
 | [scaleway_secret_version.api_relay_cnav_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
+| [scaleway_secret_version.authentik_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
 | [scaleway_account_project.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 | [scaleway_secret.api_relay_cnav_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/secret) | data source |
 | [scaleway_secret.api_relay_cnav_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/secret) | data source |
+| [scaleway_secret.authentik_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/secret) | data source |
+| [scaleway_secret.authentik_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/secret) | data source |
 | [scaleway_vpc_private_network.kubernetes_private_network](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/vpc_private_network) | data source |
 
 ## Inputs
