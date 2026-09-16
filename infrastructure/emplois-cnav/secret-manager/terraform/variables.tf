@@ -14,6 +14,11 @@ variable "managed" {
   default     = "Managed by Terraform"
 }
 
+variable "authentik_database_credentials_version" {
+  type        = number
+  description = "Authentik database credentials version: bump it to rotate the password, then apply emplois-cnav/database to propagate it to the RDB user"
+}
+
 variable "api_relay_environments" {
   type        = set(string)
   description = "Environments getting the api-relay application secrets"
