@@ -33,8 +33,45 @@ resource "scaleway_secret" "authentik" {
   type        = "key_value"
 }
 
+# PostgreSQL user password of Authentik.
+# Scaleway enforces complexity on RDB passwords (min. one digit, upper, lower and special
+# character); the special-character pool is restricted to characters inert in URLs, shells and YAML.
+ephemeral "random_password" "authentik_db" {
+  length           = 32
+  min_numeric      = 1
+  min_upper        = 1
+  min_lower        = 1
+  min_special      = 1
+  override_special = "!*+-_"
+}
+
+resource "scaleway_secret" "authentik_database" {
+  name        = "authentik-database"
+  protected   = true
+  description = var.managed
+  type        = "key_value"
+}
+
+resource "scaleway_secret_version" "authentik_database" {
+  secret_id = scaleway_secret.authentik_database.id
+  data_wo = jsonencode({
+    user     = "authentik"
+    password = ephemeral.random_password.authentik_db.result
+  })
+  data_wo_version = var.authentik_database_credentials_version
+}
+
+# Connection endpoint of the shared PostgreSQL instance for authentik: only the secret is declared
+# here; the content (host/port/name) is pushed by emplois-cnav/database.
+resource "scaleway_secret" "authentik_database_connection" {
+  name        = "authentik-database-connection"
+  protected   = true
+  description = var.managed
+  type        = "key_value"
+}
+
 # Django SECRET_KEY of the api-relay-cnav application, one per environment.
-# Unlike the secrets above (shells whose versions are pushed manually), the value is generated here:
+# Unlike the secrets above (secrets whose versions are pushed manually), the value is generated here:
 # ephemeral + write-only (data_wo), never stored in the tfstate (cf. emplois-cnav/database).
 # The special-character pool is restricted to characters inert in URLs, shells and YAML.
 ephemeral "random_password" "api_relay_cnav_django_secret_key" {
@@ -127,7 +164,7 @@ resource "scaleway_secret_version" "api_relay_cnav_database" {
   data_wo_version = var.api_relay_database_credentials_versions[each.key]
 }
 
-# Connection endpoint of the shared PostgreSQL instance: only the shell is declared here:
+# Connection endpoint of the shared PostgreSQL instance: only the secret is declared here:
 # the content (host/port/name) is pushed by emplois-cnav/database
 resource "scaleway_secret" "api_relay_cnav_database_connection" {
   for_each = var.api_relay_environments

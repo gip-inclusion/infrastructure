@@ -1,6 +1,8 @@
 scw_region = "fr-par"
 scw_zone   = "fr-par-1"
 
+authentik_database_credentials_version = 1
+
 api_relay_environments = ["integration", "production"]
 
 api_relay_django_secret_key_versions = {
