@@ -59,7 +59,7 @@ Ce module pousse de son côté l'endpoint de connexion (secret version `api-rela
 host/port/name, non sensibles), re-poussé automatiquement à chaque changement (ex : recréation d'instance).
 L'External Secrets Operator du cluster synchronise les deux secrets dans les namespaces `interops-*` (cf. `emplois-cnav-ops`).
 
-**Rotation** : incrémenter `database_credentials_versions[<env>]` dans `secret-manager` et apply
+**Rotation** : incrémenter `api_relay_database_credentials_versions[<env>]` dans `secret-manager` et apply
 (nouveaux mots de passe dans le Secret Manager), puis apply **ce module** (les users RDB les reçoivent via
 `version_count`).
 

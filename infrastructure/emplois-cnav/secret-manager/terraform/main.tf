@@ -33,8 +33,45 @@ resource "scaleway_secret" "authentik" {
   type        = "key_value"
 }
 
+# PostgreSQL user password of Authentik.
+# Scaleway enforces complexity on RDB passwords (min. one digit, upper, lower and special
+# character); the special-character pool is restricted to characters inert in URLs, shells and YAML.
+ephemeral "random_password" "authentik_db" {
+  length           = 32
+  min_numeric      = 1
+  min_upper        = 1
+  min_lower        = 1
+  min_special      = 1
+  override_special = "!*+-_"
+}
+
+resource "scaleway_secret" "authentik_database" {
+  name        = "authentik-database"
+  protected   = true
+  description = var.managed
+  type        = "key_value"
+}
+
+resource "scaleway_secret_version" "authentik_database" {
+  secret_id = scaleway_secret.authentik_database.id
+  data_wo = jsonencode({
+    user     = "authentik"
+    password = ephemeral.random_password.authentik_db.result
+  })
+  data_wo_version = var.authentik_database_credentials_version
+}
+
+# Connection endpoint of the shared PostgreSQL instance for authentik: only the secret is declared
+# here; the content (host/port/name) is pushed by emplois-cnav/database.
+resource "scaleway_secret" "authentik_database_connection" {
+  name        = "authentik-database-connection"
+  protected   = true
+  description = var.managed
+  type        = "key_value"
+}
+
 # Django SECRET_KEY of the api-relay-cnav application, one per environment.
-# Unlike the secrets above (shells whose versions are pushed manually), the value is generated here:
+# Unlike the secrets above (secrets whose versions are pushed manually), the value is generated here:
 # ephemeral + write-only (data_wo), never stored in the tfstate (cf. emplois-cnav/database).
 # The special-character pool is restricted to characters inert in URLs, shells and YAML.
 ephemeral "random_password" "api_relay_cnav_django_secret_key" {
@@ -58,7 +95,7 @@ resource "scaleway_secret" "api_relay_cnav_django" {
 # (sessions...) stay verifiable for one more rotation cycle.
 # Guarded on version 1: the secret has no version to read yet on the first push.
 ephemeral "scaleway_secret_version" "api_relay_cnav_django_current" {
-  for_each = { for env in var.api_relay_environments : env => env if var.django_secret_key_versions[env] > 1 }
+  for_each = { for env in var.api_relay_environments : env => env if var.api_relay_django_secret_key_versions[env] > 1 }
 
   secret_id = scaleway_secret.api_relay_cnav_django[each.key].id
   revision  = "latest_enabled"
@@ -71,12 +108,12 @@ resource "scaleway_secret_version" "api_relay_cnav_django" {
   data_wo = jsonencode({
     secret_key = ephemeral.random_password.api_relay_cnav_django_secret_key[each.key].result
     secret_key_fallbacks = (
-      var.django_secret_key_versions[each.key] > 1
+      var.api_relay_django_secret_key_versions[each.key] > 1
       ? jsondecode(base64decode(ephemeral.scaleway_secret_version.api_relay_cnav_django_current[each.key].data)).secret_key
       : ""
     )
   })
-  data_wo_version = var.django_secret_key_versions[each.key]
+  data_wo_version = var.api_relay_django_secret_key_versions[each.key]
 }
 
 # PostgreSQL users' passwords of api-relay-cnav. The emplois-cnav/database module reads them back
@@ -124,10 +161,10 @@ resource "scaleway_secret_version" "api_relay_cnav_database" {
     jobs_user     = "api_relay_cnav_${each.key}_jobs"
     jobs_password = ephemeral.random_password.api_relay_cnav_db_jobs[each.key].result
   })
-  data_wo_version = var.database_credentials_versions[each.key]
+  data_wo_version = var.api_relay_database_credentials_versions[each.key]
 }
 
-# Connection endpoint of the shared PostgreSQL instance: only the shell is declared here:
+# Connection endpoint of the shared PostgreSQL instance: only the secret is declared here:
 # the content (host/port/name) is pushed by emplois-cnav/database
 resource "scaleway_secret" "api_relay_cnav_database_connection" {
   for_each = var.api_relay_environments
@@ -167,5 +204,5 @@ resource "scaleway_secret_version" "api_relay_cnav_api_token" {
     # sha512() returns the lowercase hex digest, matching Django's token_hexdigest
     hashed_token = sha512(ephemeral.random_password.api_relay_cnav_api_token[each.key].result)
   })
-  data_wo_version = var.api_token_versions[each.key]
+  data_wo_version = var.api_relay_api_token_versions[each.key]
 }

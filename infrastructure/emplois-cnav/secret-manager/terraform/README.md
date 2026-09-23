@@ -30,20 +30,24 @@ No modules.
 | [scaleway_secret.api_relay_cnav_django](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.argocd_oidc](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.authentik](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
+| [scaleway_secret.authentik_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
+| [scaleway_secret.authentik_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.cnav_vpn_config](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret_version.api_relay_cnav_api_token](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
 | [scaleway_secret_version.api_relay_cnav_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
 | [scaleway_secret_version.api_relay_cnav_django](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
+| [scaleway_secret_version.authentik_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
 | [scaleway_account_project.emplois_cnav](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_api_relay_api_token_versions"></a> [api\_relay\_api\_token\_versions](#input\_api\_relay\_api\_token\_versions) | Per-environment API bearer token version: bump it to rotate the token (invalidates the previous token for API consumers) | `map(number)` | n/a | yes |
+| <a name="input_api_relay_database_credentials_versions"></a> [api\_relay\_database\_credentials\_versions](#input\_api\_relay\_database\_credentials\_versions) | Per-environment database credentials version: bump it to rotate the passwords, then apply emplois-cnav/database to propagate them to the RDB users | `map(number)` | n/a | yes |
+| <a name="input_api_relay_django_secret_key_versions"></a> [api\_relay\_django\_secret\_key\_versions](#input\_api\_relay\_django\_secret\_key\_versions) | Per-environment Django SECRET\_KEY version: bump it to rotate the key | `map(number)` | n/a | yes |
 | <a name="input_api_relay_environments"></a> [api\_relay\_environments](#input\_api\_relay\_environments) | Environments getting the api-relay application secrets | `set(string)` | n/a | yes |
-| <a name="input_api_token_versions"></a> [api\_token\_versions](#input\_api\_token\_versions) | Per-environment API bearer token version: bump it to rotate the token (invalidates the previous token for API consumers) | `map(number)` | n/a | yes |
-| <a name="input_database_credentials_versions"></a> [database\_credentials\_versions](#input\_database\_credentials\_versions) | Per-environment database credentials version: bump it to rotate the passwords, then apply emplois-cnav/database to propagate them to the RDB users | `map(number)` | n/a | yes |
-| <a name="input_django_secret_key_versions"></a> [django\_secret\_key\_versions](#input\_django\_secret\_key\_versions) | Per-environment Django SECRET\_KEY version: bump it to rotate the key | `map(number)` | n/a | yes |
+| <a name="input_authentik_database_credentials_version"></a> [authentik\_database\_credentials\_version](#input\_authentik\_database\_credentials\_version) | Authentik database credentials version: bump it to rotate the password, then apply emplois-cnav/database to propagate it to the RDB user | `number` | n/a | yes |
 | <a name="input_managed"></a> [managed](#input\_managed) | Indicates the resource is managed by Terraform | `string` | `"Managed by Terraform"` | no |
 | <a name="input_scw_region"></a> [scw\_region](#input\_scw\_region) | Scaleway region for resources | `string` | n/a | yes |
 | <a name="input_scw_zone"></a> [scw\_zone](#input\_scw\_zone) | Scaleway zone for resources | `string` | n/a | yes |
