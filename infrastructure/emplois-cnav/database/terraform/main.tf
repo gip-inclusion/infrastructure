@@ -2,7 +2,7 @@ terraform {
   required_providers {
     scaleway = {
       source  = "scaleway/scaleway"
-      version = ">= 2.69.0, <2.83.0" # FIXME(leo): issue with 2.83.0, refs. commit message
+      version = ">= 2.69.0, < 2.83.1" # FIXME(leo): issue with 2.83.0, refs. commit message
     }
   }
   # Write-only arguments (password_wo) require Terraform 1.11
