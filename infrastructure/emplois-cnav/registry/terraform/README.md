@@ -58,8 +58,8 @@ docker push rg.fr-par.scw.cloud/emplois-cnav-registry/sj-ihm-web:latest
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.83.0 |
-| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.83.0 |
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.83.1 |
+| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.83.1 |
 
 ## Modules
 
