@@ -62,6 +62,18 @@ module "dns-email" {
       priority = 1
       ttl      = 600
     },
+    "reply-inbound1" = {
+      name     = "reply"
+      data     = "inbound1.sendinblue.com."
+      type     = "MX"
+      priority = 10
+    },
+    "reply-inbound2" = {
+      name     = "reply"
+      data     = "inbound2.sendinblue.com."
+      type     = "MX"
+      priority = 20
+    },
     "smtp" = {
       name = "smtp"
       data = "smtp.ox.numerique.gouv.fr."
