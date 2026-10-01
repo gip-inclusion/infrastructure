@@ -62,6 +62,16 @@ module "dns-email" {
       priority = 1
       ttl      = 600
     },
+    "reply-brevo-code-7a18" = {
+      name = "reply"
+      data = "brevo-code:7a18495fb1b2ffa39ca7ad0c1e70adcb"
+      type = "TXT"
+    }
+    "reply-dmarc" = {
+      name = "_dmarc.reply"
+      data = "v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com"
+      type = "TXT"
+    }
     "reply-inbound1" = {
       name     = "reply"
       data     = "inbound1.sendinblue.com."
@@ -74,6 +84,11 @@ module "dns-email" {
       type     = "MX"
       priority = 20
     },
+    "reply-mail-dkim" {
+      name = "mail._domainkey.reply"
+      data = "k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDeMVIzrCa3T14JsNY0IRv5/2V1/v2itlviLQBwXsa7shBD6TrBkswsFUToPyMRWC9tbR/5ey0nRBH0ZVxp+lsmTxid2Y2z+FApQ6ra2VsXfbJP3HE6wAO0YTVEJt1TmeczhEd2Jiz/fcabIISgXEdSpTYJhb0ct0VJRxcg4c8c7wIDAQAB"
+      type = "TXT"
+    }
     "smtp" = {
       name = "smtp"
       data = "smtp.ox.numerique.gouv.fr."
