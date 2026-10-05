@@ -107,6 +107,11 @@ resource "scaleway_rdb_privilege" "api_relay_cnav_app" {
   user_name     = scaleway_rdb_user.api_relay_cnav_app[each.key].name
   database_name = scaleway_rdb_database.api_relay_cnav[each.key].name
   permission    = "readwrite"
+
+  # Avoid any drift with the "readwrite" permission which is only applied at creation (cf. above note)
+  lifecycle {
+    ignore_changes = [permission]
+  }
 }
 
 # Connection endpoint handed to the cluster through Secret Manager (secret declared in secret-manager module)
