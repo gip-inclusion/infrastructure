@@ -35,8 +35,8 @@ La connexion se fait via un accès RDP, plusieurs applications sont disponibles.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.83.0 |
-| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.83.0 |
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.85.0 |
+| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.85.0 |
 
 ## Modules
 
