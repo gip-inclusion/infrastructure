@@ -26,6 +26,13 @@ resource "scaleway_secret" "argocd_oidc" {
   type        = "key_value"
 }
 
+resource "scaleway_secret" "argocd_sops_age_key" {
+  name        = "argocd-sops-age-key"
+  protected   = true
+  description = var.managed
+  type        = "key_value"
+}
+
 resource "scaleway_secret" "authentik" {
   name        = "authentik"
   protected   = true
