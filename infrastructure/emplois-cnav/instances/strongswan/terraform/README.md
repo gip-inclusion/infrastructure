@@ -99,8 +99,8 @@ gérées dans le module `emplois-cnav/iam`.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.83.0 |
-| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.83.0 |
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.86.0 |
+| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.86.0 |
 | <a name="provider_sops"></a> [sops](#provider\_sops) | 1.4.1 |
 
 ## Modules
