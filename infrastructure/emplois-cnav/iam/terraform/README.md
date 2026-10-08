@@ -25,8 +25,10 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [scaleway_iam_application.api_relay_ci](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_application) | resource |
 | [scaleway_iam_application.kubernetes](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_application) | resource |
 | [scaleway_iam_group.kubernetes_users](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_group) | resource |
+| [scaleway_iam_policy.api_relay_ci_registry](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_policy) | resource |
 | [scaleway_iam_policy.kubernetes_readonly](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_policy) | resource |
 | [scaleway_iam_policy.kubernetes_users](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_policy) | resource |
 | [scaleway_iam_ssh_key.leo](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/iam_ssh_key) | resource |
