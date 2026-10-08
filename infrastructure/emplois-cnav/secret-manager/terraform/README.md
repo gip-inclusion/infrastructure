@@ -29,6 +29,7 @@ No modules.
 | [scaleway_secret.api_relay_cnav_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.api_relay_cnav_django](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.argocd_oidc](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
+| [scaleway_secret.argocd_sops_age_key](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.authentik](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.authentik_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.authentik_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
