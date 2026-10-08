@@ -71,3 +71,24 @@ resource "scaleway_iam_policy" "kubernetes_readonly" {
     project_ids          = [data.scaleway_account_project.emplois_cnav.id]
   }
 }
+
+# API-Relay CI IAM Application
+# The CI of api-relay-cnav pushes the application images to the Container Registry.
+# The API Key of this app must be managed manually on Scaleway's console and stored as the
+# SCW_REGISTRY_SECRET_KEY secret of the gip-inclusion/api-relay-cnav GitHub repository.
+resource "scaleway_iam_application" "api_relay_ci" {
+  name            = "emplois-cnav-api-relay-ci"
+  description     = var.managed
+  organization_id = data.scaleway_account_project.emplois_cnav.organization_id
+}
+
+# API-Relay CI - Policy for pushing container images
+resource "scaleway_iam_policy" "api_relay_ci_registry" {
+  name           = "emplois-cnav-api-relay-ci-registry"
+  description    = var.managed
+  application_id = scaleway_iam_application.api_relay_ci.id
+  rule {
+    permission_set_names = ["ContainerRegistryFullAccess"]
+    project_ids          = [data.scaleway_account_project.emplois_cnav.id]
+  }
+}
