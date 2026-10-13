@@ -38,6 +38,11 @@ module "dns-gip-inclusion" {
       data = "bitwarden.inclusion.cloud-ed.fr."
       type = "CNAME"
     },
+    "bitwarden-claim" = {
+      name = "",
+      data = "bw=tgMDzoy74m0ngfaX5xouwsVkSOY5a01oFeTxccq4rbct",
+      type = "TXT"
+    },
     "ciso" = {
       name = "ciso"
       data = "51.15.213.160"
