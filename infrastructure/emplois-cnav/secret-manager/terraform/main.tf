@@ -33,6 +33,15 @@ resource "scaleway_secret" "argocd_sops_age_key" {
   type        = "key_value"
 }
 
+# Cockpit token for the logs collector of the k8s cluster
+# Token is created manually to keep it out of the Terraform state
+resource "scaleway_secret" "cockpit_kubernetes_logs_token" {
+  name        = "cockpit-kubernetes-logs-token"
+  protected   = true
+  description = var.managed
+  type        = "key_value"
+}
+
 resource "scaleway_secret" "authentik" {
   name        = "authentik"
   protected   = true
