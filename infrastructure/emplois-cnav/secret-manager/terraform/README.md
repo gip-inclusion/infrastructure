@@ -34,6 +34,7 @@ No modules.
 | [scaleway_secret.authentik_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.authentik_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.cnav_vpn_config](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
+| [scaleway_secret.cockpit_kubernetes_logs_token](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret_version.api_relay_cnav_api_token](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
 | [scaleway_secret_version.api_relay_cnav_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
 | [scaleway_secret_version.api_relay_cnav_django](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret_version) | resource |
