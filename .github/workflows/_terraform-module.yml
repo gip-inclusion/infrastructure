@@ -8,6 +8,7 @@ name: _terraform-module
 # No secrets are set at the repository level: the calling workflow passes secrets by name and each job reads their
 # values from its environment
 # The checks job runs without any secret
+# Within a job, cloud keys are only set on the steps that use them
 
 on:
   # Reusable workflow called by the orchestrator job
@@ -108,13 +109,9 @@ jobs:
       deployment: false
 
     env:
-      SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
-      SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
       SCW_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
       SCW_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
       SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
       MODULE_PATH: ${{ inputs.module_path }}
       MODULE_LABEL: ${{ inputs.module_label }}
 
@@ -171,11 +168,18 @@ jobs:
 
       - name: Terraform init
         working-directory: ${{ env.MODULE_PATH }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
         run: terraform init -reconfigure -input=false -lockfile=readonly
 
       - name: Terraform plan
         working-directory: ${{ env.MODULE_PATH }}
         env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
         run: |
           set -euo pipefail
@@ -252,13 +256,9 @@ jobs:
       cancel-in-progress: false
 
     env:
-      SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
-      SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
       SCW_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
       SCW_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
       SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORGANIZATION_ID }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
       MODULE_PATH: ${{ inputs.module_path }}
 
     steps:
@@ -289,6 +289,9 @@ jobs:
 
       - name: Terraform init
         working-directory: ${{ env.MODULE_PATH }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
         run: terraform init -reconfigure -input=false -lockfile=readonly
 
       - name: Find PR & PR head SHA for this commit
@@ -354,6 +357,11 @@ jobs:
 
       - name: Terraform apply (from approved plan)
         working-directory: ${{ env.MODULE_PATH }}
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_TF_CI_SECRET_KEY }}
         run: |
           set -u
           terraform apply -input=false -lock-timeout=60s "$PLAN_DIR/tfplan.bin"
