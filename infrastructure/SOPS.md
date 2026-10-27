@@ -32,7 +32,8 @@ Les deux mécanismes coexistent dans ce repo. Le critère de choix est **qui con
 
 ## Architecture des clés
 
-- Une clé AGE **dédiée à la CI**, dont la partie privée est stockée dans le secret GitHub Actions `SOPS_AGE_KEY`
+- Une clé AGE **dédiée à la CI**, dont la partie privée est stockée dans le secret `SOPS_AGE_KEY`
+  de l'environnement GitHub `terraform-plan` (seul le plan déchiffre les fichiers SOPS)
 - Une clé AGE **par utilisateur humain** (restreint à qui peut apply).
   Chacun peut la stocker localement dans `~/.config/sops/age/keys.txt`
 - Les clés publiques de tous les recipients sont listées dans `.sops.yaml` à la racine du repo
@@ -156,7 +157,7 @@ Pour les valeurs encore actives et réellement sensibles, **rotater la valeur so
 # 1. Générer une nouvelle paire age
 age-keygen
 
-# 2. Mettre à jour le secret GitHub `SOPS_AGE_KEY` (partie privée)
+# 2. Mettre à jour le secret `SOPS_AGE_KEY` de l'environnement GitHub `terraform-plan` avec la clé privée
 # 3. Mettre à jour la pubkey dans .sops.yaml
 # 4. make sops-rotate-keys + commit
 ```
