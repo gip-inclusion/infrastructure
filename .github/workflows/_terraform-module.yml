@@ -1,4 +1,14 @@
 name: _terraform-module
+
+# CI secrets live in two GitHub environments:
+# - terraform-plan: required reviewers (devops-admins team), self-review prevented, no admin bypass
+#                   A plan job only gets its secrets once a reviewer approves the run
+# - terraform-apply: deployments limited to the main branch, no admin bypass
+#
+# No secrets are set at the repository level: the calling workflow passes secrets by name and each job reads their
+# values from its environment
+# The checks job runs without any secret
+
 on:
   # Reusable workflow called by the orchestrator job
   workflow_call:
@@ -90,6 +100,12 @@ jobs:
     needs: checks
     if: ${{ !inputs.apply }}
     runs-on: ubuntu-latest
+
+    environment:
+      name: terraform-plan
+      # Do not create deployments for each module plans
+      # https://docs.github.com/fr/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments#using-environments-without-deployments
+      deployment: false
 
     env:
       SCW_ACCESS_KEY: ${{ secrets.SCW_TF_CI_ACCESS_KEY }}
@@ -224,9 +240,10 @@ jobs:
 
   apply:
     # No `needs:`: checks and plan are skipped on apply runs, that skips this job too
-    name: Apply ${{ inputs.module_label }}
+    name: Apply
     if: ${{ inputs.apply }}
     runs-on: ubuntu-latest
+    environment: terraform-apply
 
     # Only applies write the state: this group runs them one at a time per module
     # Plans are not part of the group so that a pending plan never delays an apply
