@@ -9,6 +9,8 @@ name: _terraform-module
 # values from its environment
 # The checks job runs without any secret
 # Within a job, cloud keys are only set on the steps that use them
+# Plan artifacts are signed with TF_PLAN_SIGNING_KEY, set in both environments, and the apply job verifies this
+# signature before decrypting the plan
 
 on:
   # Reusable workflow called by the orchestrator job
@@ -37,6 +39,7 @@ on:
       SCW_ORGANIZATION_ID: { required: true }
       AGE_PRIVATE_KEY: { required: true }
       SOPS_AGE_KEY: { required: true }
+      TF_PLAN_SIGNING_KEY: { required: true }
 
 permissions:
   contents: read
@@ -232,6 +235,14 @@ jobs:
           test -n "${{ vars.AGE_PUBLIC_KEY }}"
           age -r "${{ vars.AGE_PUBLIC_KEY }}" -o "$PLAN_DIR/tfplan.bin.age" "$PLAN_BIN"
 
+      - name: Sign plan
+        env:
+          TF_PLAN_SIGNING_KEY: ${{ secrets.TF_PLAN_SIGNING_KEY }}
+          PLAN_COMMIT_SHA: ${{ inputs.commit_sha }}
+          PLAN_BASE_REF: ${{ github.base_ref }}
+          PLAN_RUN_ID: ${{ github.run_id }}
+        run: python .github/scripts/plan_signature.py sign
+
       - name: Upload plan artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -239,6 +250,7 @@ jobs:
           path: |
             ${{ env.PLAN_DIR }}/tfplan.bin.age
             ${{ env.PLAN_DIR }}/tfplan.sha256
+            ${{ env.PLAN_DIR }}/tfplan.sig
           if-no-files-found: error
           retention-days: 14
 
@@ -340,6 +352,14 @@ jobs:
           path: ${{ env.PLAN_DIR }}
           run-id: ${{ steps.find_run.outputs.run-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify plan signature
+        env:
+          TF_PLAN_SIGNING_KEY: ${{ secrets.TF_PLAN_SIGNING_KEY }}
+          PLAN_COMMIT_SHA: ${{ steps.find_pr.outputs.plan-sha }}
+          PLAN_BASE_REF: main
+          PLAN_RUN_ID: ${{ steps.find_run.outputs.run-id }}
+        run: python .github/scripts/plan_signature.py verify
 
       - name: Decrypt plan
         env:
