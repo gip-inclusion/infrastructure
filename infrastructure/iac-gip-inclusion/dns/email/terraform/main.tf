@@ -96,7 +96,7 @@ module "dns-email" {
     }
     "reply-dmarc" = {
       name = "_dmarc.reply"
-      data = "v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com,mailto:98224b9a@in.mailhardener.com"
+      data = "v=DMARC1; p=quarantine; rua=mailto:rua@dmarc.brevo.com,mailto:98224b9a@in.mailhardener.com; fo=1"
       type = "TXT"
     }
     "reply-inbound1" = {
