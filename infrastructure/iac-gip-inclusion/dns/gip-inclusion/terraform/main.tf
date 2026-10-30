@@ -22,6 +22,12 @@ module "dns-gip-inclusion" {
       type = "CNAME"
       ttl  = 10800
     },
+    # TXT record for Anthropic
+    "anthropic-domain-verification-5r5qm2" = {
+      name = "@",
+      data = "anthropic-domain-verification-5r5qm2=NgNO6ah1BWhD61zRJ0Qd71fvJ",
+      type = "TXT",
+    },
     "attio-domain-verification" = {
       name = ""
       data = "attio-domain-verification=E0JJRAACK295CWRVJG71W300"
