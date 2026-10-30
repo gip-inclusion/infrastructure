@@ -1,0 +1,8 @@
+# The last matching pattern takes precedence
+* @gip-inclusion/devops
+
+# CI workflows and scripts: admins only
+/.github/ @gip-inclusion/devops-admins
+
+# Non-sensitive modules: no code owner, any reviewer with write access can approve
+/infrastructure/iac-gip-inclusion/dns/
