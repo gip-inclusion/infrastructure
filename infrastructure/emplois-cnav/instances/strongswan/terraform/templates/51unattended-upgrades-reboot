@@ -1,0 +1,7 @@
+// unattended-upgrades never reboots by default: an important upgrade stays inactive until a manual reboot.
+// Reboot when an upgrade requires it (presence of /var/run/reboot-required), at 05:00 UTC (6h or 7h in France):
+// apt-daily-upgrade.timer runs the upgrades between 3h and 4h UTC, so the reboot happens the same night
+// Refs: /etc/apt/apt.conf.d/50unattended-upgrades for "documentation"
+
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-Time "05:00";

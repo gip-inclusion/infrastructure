@@ -68,6 +68,20 @@ locals {
         )
         encoding = "b64"
       },
+      # Run unattended-upgrades during the night, before the reboot defined below
+      {
+        path        = "/etc/systemd/system/apt-daily-upgrade.timer.d/override.conf" # Path expected by systemctl edit
+        content     = base64encode(file("${path.module}/templates/apt-daily-upgrade.timer.override.conf"))
+        encoding    = "b64"
+        permissions = "0644"
+      },
+      # Extra configuration for unattended-upgrades
+      {
+        path        = "/etc/apt/apt.conf.d/51unattended-upgrades-reboot"
+        content     = base64encode(file("${path.module}/templates/51unattended-upgrades-reboot"))
+        encoding    = "b64"
+        permissions = "0644"
+      },
     ]
     runcmd = [
       # =============================================================================
