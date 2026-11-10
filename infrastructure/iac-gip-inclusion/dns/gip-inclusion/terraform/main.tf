@@ -126,6 +126,12 @@ module "dns-gip-inclusion" {
       data = "external.notion.site."
       type = "CNAME"
     },
+    "pont-rdv" = {
+      name = "pont-rdv"
+      data = "novarw2u9ckv-rdvsp-bridging.functions.fnc.fr-par.scw.cloud."
+      type = "CNAME"
+      ttl  = 10800
+    },
     "staging-connect" = {
       name = "staging.connect"
       data = "domain.par.clever-cloud.com."
