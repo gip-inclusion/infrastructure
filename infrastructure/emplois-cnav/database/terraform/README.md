@@ -1,11 +1,10 @@
 ## Bases de données managées spécifiques à `emplois-cnav`
 
 Une instance PostgreSQL managée **unique et partagée** entre les environnements (à l'image du cluster Kubernetes,
-lui aussi partagé), hébergeant une base par environnement pour le backoffice/API relay : `api_relay_cnav_integration`
-et `api_relay_cnav_production`.
+lui aussi partagé), hébergeant une base par environnement pour le backoffice/API relay : `api_relay_cnav_<env>`.
 
 Conséquences assumées du partage : pas de test possible d'un upgrade de la DB en intégration avant la production
-(l'instance monte de version d'un bloc), et ressources CPU/IO/connexions communes aux deux environnements.
+(l'instance monte de version d'un bloc), et ressources CPU/IO/connexions communes à tous les environnements.
 
 ### Accès réseau
 
@@ -29,7 +28,7 @@ Avant une opération en production, considérer d'effectuer un snapshot manuel :
 
 ### Utilisateurs
 
-Par environnement (`<env>` = `integration` | `production`), sur la base `api_relay_cnav_<env>` :
+Par environnement (`<env>` = `integration` | `pentest` | `production`), sur la base `api_relay_cnav_<env>` :
 
 | Utilisateur | Droits | Usage |
 |---|---|---|
