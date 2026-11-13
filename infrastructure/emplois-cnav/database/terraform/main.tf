@@ -9,7 +9,7 @@ terraform {
   required_version = ">= 1.11"
 }
 
-# Single managed PostgreSQL instance shared by both environments, mirroring the
+# Single managed PostgreSQL instance shared by all environments, mirroring the
 # shared Kubernetes cluster: one database and one pair of users per environment.
 # Only reachable through the Kubernetes Private Network: attaching a private_network
 # without declaring a load_balancer block means no public endpoint at all.
@@ -84,7 +84,7 @@ resource "scaleway_rdb_privilege" "api_relay_cnav_jobs" {
 }
 
 # DML-only user: used by the pods serving traffic
-# Each environment's user only gets privileges on its own database (none on the other one).
+# Each environment's user only gets privileges on its own database (none on the others).
 # Note: Scaleway applies "readwrite" to the objects existing at apply time only, so this privilege
 # is just the baseline: the migration job re-grants DML (and sets default privileges)
 # on the tables it creates (see `manage.py grant_app_privileges` in api-relay-cnav).
