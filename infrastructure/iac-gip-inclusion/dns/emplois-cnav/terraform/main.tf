@@ -22,6 +22,12 @@ module "dns-emplois-cnav" {
       type = "A"
       ttl  = 300
     },
+    "admin-pentest" = {
+      name = "admin.pentest.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
+    },
     "admin-production" = {
       name = "admin.production.interops-a"
       data = data.scaleway_lb.traefik_lb.ip_address
@@ -42,6 +48,12 @@ module "dns-emplois-cnav" {
     },
     "backoffice-relay-integration" = {
       name = "backoffice.relay.integration.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
+    },
+    "backoffice-relay-pentest" = {
+      name = "backoffice.relay.pentest.interops-a"
       data = data.scaleway_lb.traefik_lb.ip_address
       type = "A"
       ttl  = 300
@@ -129,6 +141,12 @@ module "dns-emplois-cnav" {
     },
     "relay-integration" = {
       name = "relay.integration.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
+    },
+    "relay-pentest" = {
+      name = "relay.pentest.interops-a"
       data = data.scaleway_lb.traefik_lb.ip_address
       type = "A"
       ttl  = 300
