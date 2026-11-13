@@ -16,18 +16,6 @@ module "dns-emplois-cnav" {
   scw_project_id = data.scaleway_account_project.iac_gip_inclusion.project_id
 
   records = {
-    "argocd" = {
-      name = "argocd.interops-a"
-      data = data.scaleway_lb.traefik_lb.ip_address
-      type = "A"
-      ttl  = 300
-    },
-    "traefik" = {
-      name = "traefik.interops-a"
-      data = data.scaleway_lb.traefik_lb.ip_address
-      type = "A"
-      ttl  = 300
-    },
     "admin-integration" = {
       name = "admin.integration.interops-a"
       data = data.scaleway_lb.traefik_lb.ip_address
@@ -40,26 +28,8 @@ module "dns-emplois-cnav" {
       type = "A"
       ttl  = 300
     },
-    "relay-integration" = {
-      name = "relay.integration.interops-a"
-      data = data.scaleway_lb.traefik_lb.ip_address
-      type = "A"
-      ttl  = 300
-    },
-    "backoffice-relay-integration" = {
-      name = "backoffice.relay.integration.interops-a"
-      data = data.scaleway_lb.traefik_lb.ip_address
-      type = "A"
-      ttl  = 300
-    },
-    "relay-production" = {
-      name = "relay.production.interops-a"
-      data = data.scaleway_lb.traefik_lb.ip_address
-      type = "A"
-      ttl  = 300
-    },
-    "backoffice-relay-production" = {
-      name = "backoffice.relay.production.interops-a"
+    "argocd" = {
+      name = "argocd.interops-a"
       data = data.scaleway_lb.traefik_lb.ip_address
       type = "A"
       ttl  = 300
@@ -70,10 +40,17 @@ module "dns-emplois-cnav" {
       type = "A"
       ttl  = 300
     },
-    "letsencrypt-caa-interops-a" = {
-      name = "interops-a"
-      data = "0 issue \"letsencrypt.org\""
-      type = "CAA"
+    "backoffice-relay-integration" = {
+      name = "backoffice.relay.integration.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
+    },
+    "backoffice-relay-production" = {
+      name = "backoffice.relay.production.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
     },
     "certigna-caa-cnav-emplois" = {
       name = "cnav.emplois"
@@ -144,6 +121,29 @@ module "dns-emplois-cnav" {
       name = "_f1497113fd114e567c7010fa49161e07.ws-ident.integration.interops-a"
       data = "c98dc34cd966ac9625499a6c4974db14.7044c2f7aef40335782f94d68be87965.certigna.com."
       type = "CNAME"
+    },
+    "letsencrypt-caa-interops-a" = {
+      name = "interops-a"
+      data = "0 issue \"letsencrypt.org\""
+      type = "CAA"
+    },
+    "relay-integration" = {
+      name = "relay.integration.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
+    },
+    "relay-production" = {
+      name = "relay.production.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
+    },
+    "traefik" = {
+      name = "traefik.interops-a"
+      data = data.scaleway_lb.traefik_lb.ip_address
+      type = "A"
+      ttl  = 300
     }
   }
 }
