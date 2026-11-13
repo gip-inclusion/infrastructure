@@ -7,4 +7,4 @@ database_is_ha_cluster             = true
 database_volume_size_in_gb         = 20
 database_backup_schedule_retention = 30
 
-database_environments = ["integration", "production"]
+database_environments = ["integration", "production", "pentest"]
