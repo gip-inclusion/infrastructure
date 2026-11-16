@@ -25,6 +25,11 @@ module "dns-marche" {
       name = "lemarche"
       data = "domain.par.clever-cloud.com."
       type = "CNAME"
+    },
+    "spf" = {
+      name = ""
+      data = "v=spf1 include:spf.brevo.com ~all"
+      type = "TXT"
     }
   }
 }
