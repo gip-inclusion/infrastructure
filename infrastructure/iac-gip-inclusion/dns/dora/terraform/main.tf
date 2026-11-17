@@ -58,7 +58,7 @@ module "dns-dora" {
     },
     "google-site-verification" = {
       name = "dora"
-      data = "uS_8vZFB8VK6fLIH46mcPAoE-UvEASx87l7pMv5q6vI"
+      data = "google-site-verification=KXIxKJOwbmggc2iciasmem3S-JPexlOrm1oWPSlcQ2A"
       type = "TXT"
     }
   }
