@@ -55,6 +55,11 @@ module "dns-dora" {
       name = "_crisp.aide.dora"
       data = "crisp-website-id=f2839d07-9b42-477f-8bce-cf4adbda113e"
       type = "TXT"
+    },
+    "google-site-verification" = {
+      name = "dora"
+      data = "KXIxKJOwbmggc2iciasmem3S-JPexlOrm1oWPSlcQ2A"
+      type = "TXT"
     }
   }
 }
