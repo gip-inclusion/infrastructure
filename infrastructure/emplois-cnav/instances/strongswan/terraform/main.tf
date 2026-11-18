@@ -220,7 +220,7 @@ resource "scaleway_instance_private_nic" "strongswan_instance_private_nic" {
 
   # All three IPs are attached at the VPC layer so Scaleway can route packets destined to any of them to
   # this NIC. Scaleway DHCP only leases one of them per attachment though, and which one it picks
-  # is not deterministic (the `strongswan-extra-ips` systemd unit re-applies all three idempotently on every boot).
+  # is not deterministic (the `strongswan-extra-ips` systemd unit adds the other two on every boot).
   ipam_ip_ids = [
     scaleway_ipam_ip.strongswan_instance_private_network_ip.id,
     scaleway_ipam_ip.interops_integration_ip.id,
