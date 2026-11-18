@@ -81,8 +81,8 @@ La conf de développement (`compose.yaml` d'`api-relay-cnav`) doit s'aligner sur
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.86.0 |
-| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.86.0 |
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.92.1 |
+| <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.92.1 |
 
 ## Modules
 
