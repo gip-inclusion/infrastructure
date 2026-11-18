@@ -49,6 +49,12 @@ module "dns-gip-inclusion" {
       data = "bw=tgMDzoy74m0ngfaX5xouwsVkSOY5a01oFeTxccq4rbct",
       type = "TXT"
     },
+    "cal" = {
+      name = "cal"
+      data = "novarw2u9ckv-tymeslot.functions.fnc.fr-par.scw.cloud."
+      type = "CNAME"
+      ttl  = 10800
+    },
     "ciso" = {
       name = "ciso"
       data = "51.15.213.160"
