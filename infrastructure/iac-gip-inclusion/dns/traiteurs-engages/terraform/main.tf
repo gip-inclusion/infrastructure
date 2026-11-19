@@ -26,11 +26,6 @@ module "dns-traiteurs-engages" {
       data = "traiteurs-engages-prod.osc-secnum-fr1.scalingo.io."
       type = "ALIAS"
     },
-    "prod-legacy" = {
-      name = "traiteurs.engages"
-      data = "proxy.applicatif.net."
-      type = "ALIAS"
-    },
 
     # Emails
     "staging-brevo-code" : {
