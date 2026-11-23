@@ -73,14 +73,14 @@ La conf de développement (`compose.yaml` d'`api-relay-cnav`) doit s'aligner sur
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
 | <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | >= 2.69.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.92.1 |
 | <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.92.1 |
 
@@ -91,7 +91,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [scaleway_rdb_database.api_relay_cnav](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_database) | resource |
 | [scaleway_rdb_database.authentik](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_database) | resource |
 | [scaleway_rdb_instance.postgresql](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/rdb_instance) | resource |
@@ -113,7 +113,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_database_backup_schedule_retention"></a> [database\_backup\_schedule\_retention](#input\_database\_backup\_schedule\_retention) | Automated backups retention, in days | `number` | n/a | yes |
 | <a name="input_database_engine"></a> [database\_engine](#input\_database\_engine) | Managed PostgreSQL engine version (see `scw rdb engine list`) | `string` | n/a | yes |
 | <a name="input_database_environments"></a> [database\_environments](#input\_database\_environments) | Environments getting a database and its pair of users on the shared instance | `set(string)` | n/a | yes |
