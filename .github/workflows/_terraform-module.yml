@@ -91,8 +91,8 @@ jobs:
         # 2. Grab the linux-amd64 checksum from terraform-docs-v<XXX>.sha256sum for this release
         # 3. Update TERRAFORM_DOCS_VERSION and TERRAFORM_DOCS_SHA256 below
         env:
-          TERRAFORM_DOCS_VERSION: "0.20.0"
-          TERRAFORM_DOCS_SHA256: "34ae01772412bb11474e6718ea62113e38ff5964ee570a98c69fafe3a6dff286"
+          TERRAFORM_DOCS_VERSION: "0.25.1"
+          TERRAFORM_DOCS_SHA256: "246f1a3211c9dbbed4c4af82b856dbd40acda78816ac8cdb5203c2869b659c76"
         run: |
           set -euo pipefail
           echo "::group::Install terraform-docs v${TERRAFORM_DOCS_VERSION}"
