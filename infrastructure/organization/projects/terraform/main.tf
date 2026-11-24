@@ -27,6 +27,11 @@ resource "scaleway_account_project" "emplois_cnav" {
   description = var.managed
 }
 
+resource "scaleway_account_project" "secu_analyse_repo" {
+  name        = "secu-analyse-repo"
+  description = var.managed
+}
+
 resource "scaleway_account_project" "site_institutionnel_2025" {
   name        = "site-institutionnel-2025"
   description = var.managed
