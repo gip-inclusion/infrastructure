@@ -84,31 +84,7 @@ jobs:
 
       - name: Install terraform-docs
         if: always()
-        shell: bash
-        # Pinned to a specific version + SHA256 to mitigate supply-chain attacks.
-        # Bump manually when needed:
-        # 1. Pick a version from https://github.com/terraform-docs/terraform-docs/releases
-        # 2. Grab the linux-amd64 checksum from terraform-docs-v<XXX>.sha256sum for this release
-        # 3. Update TERRAFORM_DOCS_VERSION and TERRAFORM_DOCS_SHA256 below
-        env:
-          TERRAFORM_DOCS_VERSION: "0.25.1"
-          TERRAFORM_DOCS_SHA256: "246f1a3211c9dbbed4c4af82b856dbd40acda78816ac8cdb5203c2869b659c76"
-        run: |
-          set -euo pipefail
-          echo "::group::Install terraform-docs v${TERRAFORM_DOCS_VERSION}"
-
-          archive="terraform-docs-v${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz"
-          url="https://github.com/terraform-docs/terraform-docs/releases/download/v${TERRAFORM_DOCS_VERSION}/$archive"
-          tmp="$(mktemp -d)"
-          curl -fsSL -o "$tmp/$archive" "$url"
-          echo "${TERRAFORM_DOCS_SHA256}  $tmp/$archive" | sha256sum -c
-          tar -xzf "$tmp/$archive" -C "$tmp" terraform-docs
-
-          sudo install -m 0755 "$tmp/terraform-docs" /usr/local/bin/terraform-docs
-
-          # Check installation is OK
-          /usr/local/bin/terraform-docs --version
-          echo "::endgroup::"
+        uses: ./.github/actions/install-terraform-docs
 
       - name: Terraform docs
         if: always()
