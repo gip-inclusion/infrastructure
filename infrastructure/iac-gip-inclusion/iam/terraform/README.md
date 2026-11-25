@@ -10,7 +10,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.92.1 |
+| <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.93.0 |
 
 ## Modules
 
