@@ -64,12 +64,15 @@ resource "scaleway_object_bucket_policy" "state_bucket_policy" {
           Sid    = "Allow authorized developers to access the state bucket",
           Effect = "Allow",
           Principal = {
-            SCW = [
-              "user_id:0dc15a0f-cd88-4b91-ae03-edb8d6b98ee0",
-              "user_id:af8550ab-16fb-4f00-91fa-913a922fd754",
-              "user_id:c10ec0b8-a110-4d2e-85a2-f896ce77dfd1",
-              "user_id:c869faa9-335e-4463-b16c-0d3b26870786",
-            ]
+            SCW = concat(
+              [
+                "user_id:0dc15a0f-cd88-4b91-ae03-edb8d6b98ee0",
+                "user_id:af8550ab-16fb-4f00-91fa-913a922fd754",
+                "user_id:c10ec0b8-a110-4d2e-85a2-f896ce77dfd1",
+                "user_id:c869faa9-335e-4463-b16c-0d3b26870786",
+              ],
+              local.secu_analyse_repo_admins_for_policy,
+            ),
           },
           Action = [
             "s3:GetBucketAcl",
@@ -123,6 +126,20 @@ resource "scaleway_object_bucket_policy" "state_bucket_policy" {
             "${scaleway_object_bucket.gip_inclusion_terraform_state.name}/iac-gip-inclusion/kubernetes/*",
             "${scaleway_object_bucket.gip_inclusion_terraform_state.name}/iac-gip-inclusion/network/*",
             "${scaleway_object_bucket.gip_inclusion_terraform_state.name}/iac-gip-inclusion/secret-manager/*",
+          ]
+        },
+        {
+          Sid    = "Allow members of secu-analyse-repo-admins to read and write states for their project",
+          Effect = "Allow",
+          Principal = {
+            SCW = local.secu_analyse_repo_admins_for_policy,
+          },
+          Action = [
+            "s3:GetObject",
+            "s3:PutObject",
+          ]
+          Resource = [
+            "${scaleway_object_bucket.gip_inclusion_terraform_state.name}/secu-analyse-repo/*"
           ]
         },
       ]

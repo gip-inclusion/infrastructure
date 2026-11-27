@@ -228,6 +228,7 @@ No modules.
 | [scaleway_object_bucket_policy.state_bucket_policy](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/object_bucket_policy) | resource |
 | [scaleway_account_project.terraform](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/account_project) | data source |
 | [scaleway_iam_application.terraform_ci](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/iam_application) | data source |
+| [scaleway_iam_group.secu_analyse_repo_admins](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/data-sources/iam_group) | data source |
 
 ## Inputs
 
