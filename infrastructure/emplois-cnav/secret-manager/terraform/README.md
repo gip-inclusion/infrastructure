@@ -4,7 +4,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.11 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.9 |
 | <a name="requirement_scaleway"></a> [scaleway](#requirement\_scaleway) | >= 2.69.0 |
@@ -12,7 +12,7 @@
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_scaleway"></a> [scaleway](#provider\_scaleway) | 2.92.1 |
 | <a name="provider_scaleway.tmp"></a> [scaleway.tmp](#provider\_scaleway.tmp) | 2.92.1 |
 
@@ -23,7 +23,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [scaleway_secret.api_relay_cnav_api_token](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.api_relay_cnav_database](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
 | [scaleway_secret.api_relay_cnav_database_connection](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/secret) | resource |
@@ -44,7 +44,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_api_relay_api_token_versions"></a> [api\_relay\_api\_token\_versions](#input\_api\_relay\_api\_token\_versions) | Per-environment API bearer token version: bump it to rotate the token (invalidates the previous token for API consumers) | `map(number)` | n/a | yes |
 | <a name="input_api_relay_database_credentials_versions"></a> [api\_relay\_database\_credentials\_versions](#input\_api\_relay\_database\_credentials\_versions) | Per-environment database credentials version: bump it to rotate the passwords, then apply emplois-cnav/database to propagate them to the RDB users | `map(number)` | n/a | yes |
 | <a name="input_api_relay_django_secret_key_versions"></a> [api\_relay\_django\_secret\_key\_versions](#input\_api\_relay\_django\_secret\_key\_versions) | Per-environment Django SECRET\_KEY version: bump it to rotate the key | `map(number)` | n/a | yes |

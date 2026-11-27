@@ -82,14 +82,15 @@ jobs:
           set -euo pipefail
           terraform fmt -check -diff -recursive
 
+      - name: Install terraform-docs
+        if: always()
+        uses: ./.github/actions/install-terraform-docs
+
       - name: Terraform docs
         if: always()
-        uses: terraform-docs/gh-actions@6de6da0cefcc6b4b7a5cbea4d79d97060733093c # v1.4.1
-        with:
-          working-dir: ${{ env.MODULE_PATH }}
-          output-method: inject
-          output-file: README.md
-          fail-on-diff: "true"
+        working-directory: ${{ env.MODULE_PATH }}
+        # Fails if README.md is missing or out of date: regenerate it with the terraform_docs pre-commit hook
+        run: terraform-docs markdown table --output-file README.md --output-mode inject --output-check .
 
       - name: Terraform validate
         if: always()
