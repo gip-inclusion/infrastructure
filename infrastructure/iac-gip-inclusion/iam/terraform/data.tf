@@ -10,6 +10,10 @@ data "scaleway_account_project" "emplois_cnav" {
   name = "emplois-cnav"
 }
 
+data "scaleway_account_project" "secu_analyse_repo" {
+  name = "secu-analyse-repo"
+}
+
 data "scaleway_account_project" "site_institutionnel_2025" {
   name = "site-institutionnel-2025"
 }

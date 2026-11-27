@@ -43,6 +43,7 @@ resource "scaleway_iam_policy" "terraform_ci" {
     project_ids = [
       data.scaleway_account_project.iac_gip_inclusion.project_id,
       data.scaleway_account_project.emplois_cnav.project_id,
+      data.scaleway_account_project.secu_analyse_repo.project_id,
       data.scaleway_account_project.site_institutionnel_2025.project_id,
       data.scaleway_account_project.traiteurs_engages.project_id
     ]
